@@ -17,7 +17,7 @@ import TodoList, { TasksPopsType } from "./Todolist";
 
 export type FilterType = "all" | "active" | "completed";
 
-type TodolistType = {
+export type TodolistType = {
   id: string;
   title: string;
   filter: FilterType;
@@ -26,6 +26,7 @@ type Task1Type = {
   [key: string]: Array<TasksPopsType>;
 };
 function App() {
+
   function removeTasks(id: string, todolistId: string) {
     let todolistTasks = task1[todolistId];
     let taskaf = todolistTasks.filter((t) => t.id !== id);
