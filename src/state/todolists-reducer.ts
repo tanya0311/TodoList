@@ -8,13 +8,14 @@ export type ActionType =
   | ChangeTLTitleACType
   | ChangeTLFilterACType;
 
-type RemoveTLACType = {
+export type RemoveTLACType = {
   type: "REMOVE-TODOLIST";
   todolistId: string;
 };
-type AddTLACType = {
+export type AddTLACType = {
   type: "ADD-TODOLIST";
   title: string;
+  id: string;
 };
 type ChangeTLTitleACType = {
   type: "CHANGE-TODOLIST-TITLE";
@@ -26,8 +27,8 @@ type ChangeTLFilterACType = {
   todolistId: string;
   filter: FilterType;
 };
-const REMOVE_TODOLIST = "REMOVE-TODOLIST";
-const ADD_TODOLIST = "ADD-TODOLIST";
+export const REMOVE_TODOLIST = "REMOVE-TODOLIST";
+export const ADD_TODOLIST = "ADD-TODOLIST";
 const CHANGE_TODOLIST_TITLE = "CHANGE-TODOLIST-TITLE";
 const CHANGE_TODOLIST_FILTER = "CHANGE-TODOLIST-FILTER";
 
@@ -40,14 +41,15 @@ export const todoListReducer = (
       return stateTL.filter((tl) => tl.id !== action.todolistId);
 
     case ADD_TODOLIST:
-      let newTodolistId = v1();
+      // let newTodolistId = v1();
       let newTodolist: TodolistType = {
-        id: newTodolistId,
+        // id: newTodolistId,
+        id: action.id,
         title: action.title,
         filter: "all",
       };
       return [newTodolist, ...stateTL];
-    // return [ {  id: v1(), title: action.title, filter: "all"}, ...stateTL]
+    // return [ {  id: action.id, title: action.title, filter: "all"}, ...stateTL]
     case CHANGE_TODOLIST_TITLE:
       const todolist = stateTL.find((tl) => tl.id === action.todolistId);
       if (todolist) {
@@ -77,14 +79,21 @@ export const AddTLAC = (title: string): AddTLACType => {
   return {
     type: "ADD-TODOLIST" as const,
     title: title,
+    id: v1(),
   };
 };
-export const ChangeTLTitleAC = (todolistId: string, newTitle: string): ChangeTLTitleACType => ({
+export const ChangeTLTitleAC = (
+  todolistId: string,
+  newTitle: string
+): ChangeTLTitleACType => ({
   type: "CHANGE-TODOLIST-TITLE" as const,
   todolistId,
   newTitle,
 });
-export const ChangeTLFilterAC = (todolistId: string,filter: FilterType): ChangeTLFilterACType => ({
+export const ChangeTLFilterAC = (
+  todolistId: string,
+  filter: FilterType
+): ChangeTLFilterACType => ({
   type: "CHANGE-TODOLIST-FILTER" as const,
   todolistId,
   filter,

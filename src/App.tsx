@@ -22,7 +22,7 @@ export type TodolistType = {
   title: string;
   filter: FilterType;
 };
-type Task1Type = {
+export type Task1Type = {
   [key: string]: Array<TasksPopsType>;
 };
 function App() {
@@ -35,7 +35,7 @@ function App() {
   }
 
   function addTask(title: string, todolistId: string) {
-    let newtask = { id: v1(), title: title, isDone: false };
+    let newtask:TasksPopsType = { id: v1(), title: title, isDone: false };
     let tasks2 = task1[todolistId];
     let newTasks = [newtask, ...tasks2];
     task1[todolistId] = newTasks;
