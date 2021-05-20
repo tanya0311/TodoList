@@ -44,9 +44,10 @@ const REMOVE_TASKS = "REMOVE-TASKS";
 const ADD_TASKS = "ADD-TASKS";
 const CHANGE_TASKS = "CHANGE-TASKS-STATUS";
 const CHANGE_TTITLE_ASKS = "CHANGE-TASKS-TITLE";
+const initialState: Task1Type = {};
 
 export const tasksReducer = (
-  stateTasks: StateType,
+  stateTasks: StateType = initialState,
   action: ActionType
 ): StateType => {
   switch (action.type) {
@@ -70,6 +71,7 @@ export const tasksReducer = (
       };
       return {
         ...stateTasks,
+        //! /////////
         [action.todolistId]: [newtask, ...stateTasks[action.todolistId]],
       };
     }

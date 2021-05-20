@@ -32,8 +32,10 @@ export const ADD_TODOLIST = "ADD-TODOLIST";
 const CHANGE_TODOLIST_TITLE = "CHANGE-TODOLIST-TITLE";
 const CHANGE_TODOLIST_FILTER = "CHANGE-TODOLIST-FILTER";
 
+const initialState: StateType = [];
+
 export const todoListReducer = (
-  stateTL: StateType,
+  stateTL: StateType = initialState,
   action: ActionType
 ): StateType => {
   switch (action.type) {
