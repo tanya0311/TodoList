@@ -2,9 +2,12 @@ import { Button, Checkbox, IconButton } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import { type } from "os";
 import React, { ChangeEvent, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import AddItemForm from "./AddItemForm";
 import { FilterType } from "./App";
+import { TodolistType } from "./AppWithRedux";
 import { EditableSpan } from "./EditableSpan";
+import { AppRootStateType } from "./state/store";
 
 type TodolistPropsType = {
   title: string;
@@ -26,6 +29,19 @@ export type TasksPopsType = {
 };
 
 function TodoList(props: TodolistPropsType) {
+
+  //! **************
+  let todolist = useSelector<AppRootStateType, TodolistType>(
+    (state) => state.todolists.filter((el) => el.id === props.id)[0]
+  );
+  let tasks = useSelector<AppRootStateType, Array<TasksPopsType>>(
+    (state) => state.task1.id
+  );
+  let dispatch = useDispatch();
+ //! **************
+
+
+
   function addTask(title: string) {
     props.addTask(title, props.id);
   }
@@ -92,7 +108,8 @@ function TodoList(props: TodolistPropsType) {
           All
         </Button>
 
-        <Button color={'primary'}
+        <Button
+          color={"primary"}
           variant={props.filter === "active" ? "contained" : "text"}
           // className={props.filter === "active" ? "active-filter" : ""}
           onClick={() => {
@@ -101,9 +118,9 @@ function TodoList(props: TodolistPropsType) {
         >
           Active
         </Button>
-       
 
-        <Button color={'secondary'}
+        <Button
+          color={"secondary"}
           variant={props.filter === "completed" ? "contained" : "text"}
           onClick={() => {
             props.changeFilter("completed", props.id);
