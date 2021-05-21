@@ -1,14 +1,16 @@
 import { Button, IconButton, TextField } from "@material-ui/core";
 import { ControlPoint } from "@material-ui/icons";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState, KeyboardEvent } from "react";
 
 type AddItemFormProps = {
   addItem: (title: string) => void;
 };
-
-function AddItemForm(props: AddItemFormProps) {
+const AddItemForm = React.memo((props: AddItemFormProps) =>{
+//  const AddItemForm = React.memo(function(props: AddItemFormProps) {
   let [newtitle, setNewtitle] = useState("");
   let [error, setError] = useState<string | null>(null);
+
+  // console.log("AddItemForm called");
 
   function addItem() {
     if (newtitle.trim() !== "") {
@@ -19,6 +21,18 @@ function AddItemForm(props: AddItemFormProps) {
     }
   }
 
+  function onKeyPressHandler(e: KeyboardEvent<HTMLInputElement>) {
+    error && setError(null);
+    if (e.charCode === 13) {
+      addItem();
+      setNewtitle("");
+    }
+  }
+
+  function onChangeHandler(e: ChangeEvent<HTMLInputElement>) {
+    setNewtitle(e.currentTarget.value);
+  }
+
   return (
     <div>
       <TextField
@@ -26,26 +40,17 @@ function AddItemForm(props: AddItemFormProps) {
         value={newtitle}
         // label={newtitle}
         label="Задача"
-        error={!!error }
+        error={!!error}
         helperText={error}
-        onChange={(e) => {
-          setNewtitle(e.currentTarget.value);
-        }}
-        onKeyPress={(e) => {
-          setError(null);
-          if (e.charCode === 13) {
-            addItem();
-            setNewtitle("");
-          }
-        }}
-  
+        onChange={onChangeHandler}
+        onKeyPress={onKeyPressHandler}
       />
-      <IconButton onClick={addItem}  color={"primary"}>
+      <IconButton onClick={addItem} color={"primary"}>
         {/* {" "} */}
-        <ControlPoint/>
+        <ControlPoint />
       </IconButton>
       {/* {error && <div className="error-message">{error}</div>} */}
     </div>
   );
-}
+})
 export default AddItemForm;

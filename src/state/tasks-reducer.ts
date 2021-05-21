@@ -77,6 +77,7 @@ export const tasksReducer = (
     }
     case CHANGE_TASKS: {
       let copyStateTasks = { ...stateTasks };
+      //если это способ то будет ошибка когда будем использовать React.memo и useCollback
       //  let tasks = copyStateTasks[action.todolistId];
       //  let task = tasks.find((tl) => tl.id === action.taskId)
       //  if (task) {
