@@ -4,7 +4,7 @@ import React, { ChangeEvent } from "react";
 import { EditableSpan } from "./EditableSpan";
 import { TasksPopsType } from "./Todolist";
 
-type TaskPropsType = {
+export type TaskPropsType = {
   task: TasksPopsType;
   changeTask1Title: (taskId: string, newValue: string) => void;
   changeTasks: (taskId: string, newIsDoneValue: boolean) => void;
@@ -13,7 +13,7 @@ type TaskPropsType = {
 
 export const Task = React.memo(
   ({ task, changeTask1Title, changeTasks, removeTasks }: TaskPropsType) => {
-    console.log("Task called");
+    // console.log("Task called");
 
     const onChangTitleHandler = (newValue: string) => {
       changeTask1Title(task.id, newValue);
