@@ -8,7 +8,7 @@ const instance = axios.create({
   },
 });
 
-type TodoType = {
+export type TodoType = {
   id: string;
   title: string;
   addedDate: string;

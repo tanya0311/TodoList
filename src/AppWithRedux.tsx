@@ -9,10 +9,11 @@ import {
   Typography,
 } from "@material-ui/core";
 import { Menu } from "@material-ui/icons";
-import React, { useCallback, useReducer, useState } from "react";
+import React, { useCallback, useEffect, useReducer, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { v1 } from "uuid";
 import AddItemForm from "./AddItemForm";
+import { todolistAPI } from "./api/todolist-api";
 import "./App.css";
 import { AppRootStateType } from "./state/store";
 import {
@@ -27,6 +28,7 @@ import {
   ChangeTLFilterAC,
   ChangeTLTitleAC,
   RemoveTLAC,
+  setTodolistsAC,
   todoListReducer,
 } from "./state/todolists-reducer";
 import TodoList, { TasksPopsType } from "./Todolist";
@@ -42,11 +44,20 @@ export type Task1Type = {
   [key: string]: Array<TasksPopsType>;
 };
 function AppWithRedux() {
+  
   let todoList = useSelector<AppRootStateType, TodolistType[]>(
     (state) => state.todolists
   );
   let task1 = useSelector<AppRootStateType, Task1Type>((state) => state.task1);
   let dispatch = useDispatch();
+
+  useEffect( ()=>{
+    todolistAPI.getTodolists().then(res=>{
+      let todos=res.data
+      dispatch(setTodolistsAC(todos))
+    })
+  }, [] )
+
 
   const removeTasks = useCallback(
     (id: string, todolistId: string) => {

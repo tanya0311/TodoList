@@ -1,13 +1,9 @@
-import { Button, Checkbox, IconButton } from "@material-ui/core";
+import { Button, IconButton } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
-import { type } from "os";
-import React, { ChangeEvent, useCallback, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, {  useCallback} from "react";
 import AddItemForm from "./AddItemForm";
-import { FilterType } from "./App";
-import { TodolistType } from "./AppWithRedux";
+import { FilterType} from "./AppWithRedux";
 import { EditableSpan } from "./EditableSpan";
-import { AppRootStateType } from "./state/store";
 import { Task } from "./Task";
 
 type TodolistPropsType = {
