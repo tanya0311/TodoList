@@ -1,13 +1,15 @@
 import { Checkbox, IconButton } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import React, { ChangeEvent } from "react";
+import { TaskStatuses, TaskType } from "./api/todolist-api";
 import { EditableSpan } from "./EditableSpan";
-import { TasksPopsType } from "./Todolist";
+// import { TasksPopsType } from "./Todolist";
 
 export type TaskPropsType = {
-  task: TasksPopsType;
+  task: TaskType;
+  // task: TasksPopsType;
   changeTask1Title: (taskId: string, newValue: string) => void;
-  changeTasks: (taskId: string, newIsDoneValue: boolean) => void;
+  changeTasks: (taskId: string, newIsDoneValue: TaskStatuses) => void;
   removeTasks: (taskId: string) => void;
 };
 
@@ -19,16 +21,18 @@ export const Task = React.memo(
       changeTask1Title(task.id, newValue);
     };
     const onChangeTaskSatatus = (e: ChangeEvent<HTMLInputElement>) => {
-      changeTasks(task.id, e.currentTarget.checked);
+      let newIsDoneValue = e.currentTarget.checked
+      changeTasks(task.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New);
+      // changeTasks(task.id, e.currentTarget.checked);
     };
     const removeTask = () => {
       removeTasks(task.id);
     };
     return (
-      <li key={task.id} className={task.isDone ? "is-done" : ""}>
+      <li key={task.id} className={task.status ? "is-done" : ""}>
         <Checkbox
           // type="checkbox" не надо
-          checked={task.isDone}
+          checked={task.status === TaskStatuses.Completed}
           onChange={onChangeTaskSatatus}
         />
 
