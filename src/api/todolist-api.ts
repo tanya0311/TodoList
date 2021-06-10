@@ -48,13 +48,14 @@ type ResponseType<T = {}> = {
   data: T;
 };
 
-export type UpdateTaskModelType = {
+export type UpdateTaskModelType  = {
   title: string;
-  description: string;
+  description: string | null;
   status: number;
   priority: number;
-  startDate: string;
-  deadline: string;
+  startDate: string | null;
+  // startDate: string ;
+  deadline: string | null;
 };
 
 type GetTasksResponse = {
@@ -102,12 +103,10 @@ export const todolistAPI = {
     );
     return promise;
   },
-  updateTask(todolistId: string, taskId: string, newTitle: string) {
+  updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
     const promise = instance.put<ResponseType<{ item: TaskType }>>(
       `todo-lists/${todolistId}/tasks/${taskId}`,
-      {
-        title: newTitle,
-      }
+      model
     );
     return promise;
   },
