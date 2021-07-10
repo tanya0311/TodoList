@@ -106,7 +106,7 @@ export const todolistApi = {
     // //! в 1.1/todo-lists/ ${todolistId} где ${todolistId} явл URI-параметром
     return instance.delete<ResponseType>(`todo-lists/${idTL}`);
   },
-  UpdateTodolist(idTL: string, newtitle: string) {
+  updateTodolist(idTL: string, newtitle: string) {
     return instance.put<ResponseType>(`todo-lists/${idTL}`, {
       title: newtitle,
     });
