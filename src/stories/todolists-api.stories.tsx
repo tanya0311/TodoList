@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { tasksApi, todolistApi } from "../api/todolist-api-2";
-// import { tasksApi, todolistApi } from '../api/ todolist-API'
+import { todolistAPI } from "../api/todolist-api";
 
 export default {
   title: "API",
@@ -16,7 +15,7 @@ const settings = {
 export const GetTodolists = () => {
   const [state, setState] = useState<any>(null);
   useEffect(() => {
-    todolistApi.getTodolist().then((res) => {
+    todolistAPI.getTodolists().then((res) => {
       setState(res.data);
     });
 
@@ -32,13 +31,13 @@ export const CreateTodolist = () => {
   const [todolistTitle, setTodolistTitle] = useState<string>("");
 
   // useEffect(() => {
-  //    todolistApi.createTodolist('привет').then(res=>{
+  //    todolistAPI.createTodolist('привет').then(res=>{
   //       setState(res.data)
   //    })
   // }, [])
 
   const createTodolist = () => {
-    todolistApi.createTodolist(todolistTitle).then((res) => {
+    todolistAPI.createTodolist(todolistTitle).then((res) => {
       setState(res.data);
     });
   };
@@ -67,14 +66,14 @@ export const DeleteTodolist = () => {
 
   // useEffect(() => {
   //       let idTL="bd8b75d7-205e-4423-a767-bab0f5c9c7a5"
-  //    todolistApi.deleteTodolist(idTL).then(res=>{
+  //    todolistAPI.deleteTodolist(idTL).then(res=>{
   //       // debugger
   //       setState(res.data)
   //    })
   // }, [])
 
   const deleteTodolist1 = () => {
-    todolistApi.deleteTodolist(todolistId).then((res) => {
+    todolistAPI.deleteTodolist(todolistId).then((res) => {
       setState(res.data);
     });
   };
@@ -103,13 +102,13 @@ export const UpdateTodolistTitle = () => {
 
   // useEffect(() => {
   //     let idTL='c3751c73-fdb1-4abf-a05c-a4336047ec90'
-  //   todolistApi.UpdateTodolist(idTL, 'newTitle1').then(res=>{
+  //   todolistAPI.UpdateTodolist(idTL, 'newTitle1').then(res=>{
   //       setState(res.data)
   //    })
   // }, [])
 
   const updateTodolist = () => {
-    todolistApi.UpdateTodolist(todolistId, title).then((res) => {
+    todolistAPI.updateTodolist(todolistId, title).then((res) => {
       setState(res.data);
     });
   };
@@ -145,13 +144,13 @@ export const GetTasks = () => {
 
   // useEffect(() => {
   //    let idTL='1e5d1ed1-f4fc-4175-a4de-8bb95aa2459b'
-  //    tasksApi.getTasks(idTL).then(res=>{
+  //    todolistAPI.getTasks(idTL).then(res=>{
   //       setState(res.data)
   //    })
   // }, [])
 
   const getTasks = () => {
-    tasksApi.getTasks(todolistId).then((res) => {
+    todolistAPI.getTasks(todolistId).then((res) => {
       setState(res.data);
     });
   };
@@ -182,13 +181,13 @@ export const DeleteTasks = () => {
   // useEffect(() => {
   //    let idTL='1e5d1ed1-f4fc-4175-a4de-8bb95aa2459b'
   //    let idTask='dc7f712e-8fcb-4ff4-a46a-c8518169e1a5'
-  //    tasksApi.deleteTask(idTL,idTask ).then(res=>{
+  //    todolistAPI.deleteTask(idTL,idTask ).then(res=>{
   //       setState(res.data)
   //    })
   // }, [])
 
   const deletTask = () => {
-    tasksApi.deleteTask(todolistId, taskId).then((res) => {
+    todolistAPI.deleteTask(todolistId, taskId).then((res) => {
       setState(res.data);
     });
   };
@@ -223,12 +222,12 @@ export const CreateTask = () => {
 
   // useEffect(() => {
   //    let idTL='1e5d1ed1-f4fc-4175-a4de-8bb95aa2459b'
-  //    tasksApi.createTask(idTL, 'привет').then(res=>{
+  //    todolistAPI.createTasks(idTL, 'привет').then(res=>{
   //       setState(res.data)
   //    })
   // }, [])
   const createTask = () => {
-    tasksApi.createTask(todolistId, taskTitle).then((res) => {
+    todolistAPI.createTasks(todolistId, taskTitle).then((res) => {
       setState(res.data);
     });
   };
@@ -271,14 +270,14 @@ export const UpdateTaskTitle = () => {
   // useEffect(() => {
   //    let idTL='1e5d1ed1-f4fc-4175-a4de-8bb95aa2459b'
   //    let idTask='a6c150e5-9145-4945-a3ba-2651149b4ef7'
-  //   tasksApi.updateTask(idTL, idTask, 'newTask').then(res=>{
+  //   todolistAPI.updateTask(idTL, idTask, 'newTask').then(res=>{
   //       // debugger
   //       setState(res.data)
   //    })
   // }, [])
 
   const updateTask = () => {
-    tasksApi
+    todolistAPI
       .updateTask(todolistId, taskId, {
         deadline: "",
         description: description,

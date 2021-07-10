@@ -1,6 +1,6 @@
-import { tasksApi } from './../api/todolist-api-2';
 import { Dispatch } from "redux";
-import { TaskStatuses, TaskType, updateTasksModelType } from "../api/todolist-api-2";
+import { v1 } from "uuid";
+import { TaskStatuses, TaskType, todolistAPI, UpdateTaskModelType } from "../api/todolist-api";
 import { Task1Type } from "../AppWithRedux";
 import { AppRootStateType } from "./store";
 // import { TasksPopsType } from "../Todolist";
@@ -52,6 +52,7 @@ export const tasksReducer = (
       const stateCopy = { ...stateTasks };
       stateCopy[action.todolistId] = action.tasks;
       return stateCopy;
+      // return {...stateTasks, [action.todolistId]:action.tasks};
     }
     case "SET-TODOLISTS": {
       const stateCopy = { ...stateTasks };
@@ -161,12 +162,15 @@ export const changeTaskTitleAC = (
 };
 
 export const setTasksAC = (tasks: Array<TaskType>, todolistId: string) => {
-  return { type: "SET-TASKS" as const, tasks, todolistId };
+  return { type: "SET-TASKS", tasks, todolistId } as const;
 };
 
+//!    !!!!!!!!!!!!!!!!!!!
+// thunks
 export const fetchTasksTC = (todolistId: string) => {
   return (dispatch: Dispatch) => {
-    tasksApi.getTasks(todolistId).then((res) => {
+    todolistAPI.getTasks(todolistId).then((res) => {
+      // debugger
       const tasks = res.data.items;
       dispatch(setTasksAC(tasks, todolistId));
     });
@@ -174,16 +178,15 @@ export const fetchTasksTC = (todolistId: string) => {
 };
 export const deleteTasksTC = (taskId: string, todolistId: string) => {
   return (dispatch: Dispatch) => {
-    tasksApi.deleteTask(todolistId, taskId).then((res) => {
+    todolistAPI.deleteTask(todolistId, taskId).then((res) => {
       dispatch(removeTaskAC(taskId, todolistId));
     });
   };
 };
 export const addTasksTC = (title: string, todolistId: string) => {
   return (dispatch: Dispatch) => {
-    tasksApi.createTask(todolistId, title).then((res) => {
-      // let task = res.data.data.item;
-      let task = res.data.data;
+    todolistAPI.createTasks(todolistId, title).then((res) => {
+      let task = res.data.data.item;
       dispatch(addTaskAC(task));
     });
   };
@@ -202,7 +205,7 @@ export const changeTaskStatusTC = (
     });
     if (updateTask) {
       // const model: UpdateTaskModelType = { ...updateTask, status };
-      const model: updateTasksModelType = {
+      const model: UpdateTaskModelType = {
             title: updateTask.title,
             startDate: updateTask.startDate,
             priority: updateTask.priority,
@@ -210,7 +213,7 @@ export const changeTaskStatusTC = (
             deadline: updateTask.deadline,
             status: status,
           };
-          tasksApi.updateTask(todolistId, taskId, model).then((res) => {
+      todolistAPI.updateTask(todolistId, taskId, model).then((res) => {
         const newTask = res.data.data.item;
         dispatch(changeTaskStatusAC(newTask.id, newTask.status, newTask.todoListId));
       });
@@ -233,7 +236,7 @@ export const changeTaskTitleTC = (
     });
     if (updateTask) {
       // const model: UpdateTaskModelType = { ...updateTask, status };
-      const model: updateTasksModelType = {
+      const model: UpdateTaskModelType = {
             title: title,
             startDate: updateTask.startDate,
             priority: updateTask.priority,
@@ -241,7 +244,7 @@ export const changeTaskTitleTC = (
             deadline: updateTask.deadline,
             status: updateTask.status,
           };
-          tasksApi.updateTask(todolistId, taskId, model).then((res) => {
+      todolistAPI.updateTask(todolistId, taskId, model).then((res) => {
         const newTask = res.data.data.item;
         dispatch(changeTaskTitleAC(newTask.id, newTask.title, newTask.todoListId));
       });

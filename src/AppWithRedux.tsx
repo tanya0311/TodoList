@@ -55,6 +55,7 @@ function AppWithRedux() {
   );
 
   const addTask = useCallback((title: string, todolistId: string) => {
+    // debugger
     let tunk = addTasksTC(title, todolistId);
     dispatch(tunk);
   }, []);

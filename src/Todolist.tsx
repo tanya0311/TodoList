@@ -3,7 +3,7 @@ import { Delete } from "@material-ui/icons";
 import React, {  useCallback, useEffect} from "react";
 import { useDispatch } from "react-redux";
 import AddItemForm from "./AddItemForm";
-import { TaskStatuses, TaskType } from "./api/todolist-api-2";
+import { TaskStatuses, TaskType } from "./api/todolist-api";
 import { EditableSpan } from "./EditableSpan";
 import { fetchTasksTC } from "./state/tasks-reducer";
 import { FilterType } from "./state/todolists-reducer";

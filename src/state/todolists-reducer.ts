@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import { v1 } from "uuid";
-import {  todolistApi, TodolistType } from "../api/todolist-api-2";
+import { todolistAPI, TodolistType } from "../api/todolist-api";
 import { AppRootStateType } from "./store";
 
 export type FilterType = "all" | "active" | "completed";
@@ -98,7 +98,8 @@ export const setTodolistsAC = (todolists: Array<TodolistType>) => {
 
 export const fetchTodolistsTC = () => {
   return (dispatch: Dispatch) => {
-    todolistApi.getTodolist().then((res) => {
+    todolistAPI.getTodolists().then((res) => {
+      // debugger
       dispatch(setTodolistsAC(res.data));
     });
   };
@@ -106,21 +107,21 @@ export const fetchTodolistsTC = () => {
 
 export const createTodolistTC = (title: string) => {
   return (dispatch: Dispatch) => {
-    todolistApi.createTodolist(title).then((res) => {
+    todolistAPI.createTodolist(title).then((res) => {
       dispatch(AddTLAC(res.data.data.item));
     });
   };
 };
 export const changeTodolistTitleTC = (todolistId: string, title: string) => {
   return (dispatch: Dispatch) => {
-    todolistApi.updateTodolist(todolistId, title).then((res) => {
+    todolistAPI.updateTodolist(todolistId, title).then((res) => {
       dispatch(ChangeTLTitleAC(todolistId, title));
     });
   };
 };
 export const deleteTodolistTC = (todolistId: string) => {
   return (dispatch: Dispatch) => {
-    todolistApi.deleteTodolist(todolistId).then((res) => {
+    todolistAPI.deleteTodolist(todolistId).then((res) => {
       dispatch(RemoveTLAC(todolistId));
     });
   };

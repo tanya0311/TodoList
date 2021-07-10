@@ -16,7 +16,7 @@ const rootReducer = combineReducers({
  
 export type AppRootStateType = ReturnType<typeof rootReducer>;
 
-const initialGlobalState = {
+const initialGlobalState:AppRootStateType = {
   todolists: [
     {
       id: "todolistId1",
@@ -41,9 +41,12 @@ const initialGlobalState = {
         // completed: false,
         status: TaskStatuses.New,
         todoListId: "todolistId1",
-        description: "",
-        startDate: "",
-        deadline: "",
+        // description: "",
+        description: null,
+        startDate:null,
+        // startDate: "",
+        deadline: null,
+        // deadline: "",
         addedDate: "",
         order: 0,
         priority: TaskPriorities.Low,
@@ -56,9 +59,9 @@ const initialGlobalState = {
         // completed: false,
         status: TaskStatuses.New,
         todoListId: "todolistId1",
-        description: "",
-        startDate: "",
-        deadline: "",
+        description: null,
+        startDate: null,
+        deadline: null,
         addedDate: "",
         order: 0,
         priority: TaskPriorities.Low,
@@ -70,7 +73,8 @@ const initialGlobalState = {
 export const storyBookStore = createStore(
   rootReducer,
   //   applyMiddleware(thunkMiddleware),
-  initialGlobalState as AppRootStateType
+  initialGlobalState
+  // initialGlobalState as AppRootStateType
 );
 
 export const ReduxStoreProviderDecorator = (storyFn: () => React.ReactNode) => {
