@@ -8,7 +8,7 @@ import {
 } from "./tasks-reducer";
 import { AddTLAC, RemoveTLAC } from "./todolists-reducer";
 
-let startState: Task1Type;
+let startState: Task1Type = {};
 
 beforeEach(() => {
   startState = {

@@ -14,6 +14,7 @@ export type TodolistType = {
   addedDate: string;
   order: number;
 };
+
 export enum TaskStatuses {
   New = 0,
   InProgress = 1,
@@ -32,7 +33,7 @@ export type TaskType = {
   title: string;
   description: null | string;
   todoListId: string;
-  completed: boolean;
+  // completed: boolean;
   order: number;
   status: TaskStatuses;
   priority: TaskPriorities;
@@ -62,6 +63,11 @@ type GetTasksResponse = {
   error: string | null;
   totalCount: number;
   items: TaskType[];
+};
+export type deleteTasksResponseType = {
+  resultCode: number
+   messages: string[],
+   data: {}
 };
 
 export const todolistAPI = {
