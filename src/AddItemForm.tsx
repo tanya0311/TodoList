@@ -1,9 +1,11 @@
 import { Button, IconButton, TextField } from "@material-ui/core";
 import { ControlPoint } from "@material-ui/icons";
 import React, { ChangeEvent, useState, KeyboardEvent } from "react";
+import { TaskType } from "./api/todolist-api-2";
 
 export type AddItemFormProps = {
   addItem: (title: string) => void;
+  // addItem: (task: TaskType) => void; //for AppWithReducers
 };
 const AddItemForm = React.memo((props: AddItemFormProps) =>{
 //  const AddItemForm = React.memo(function(props: AddItemFormProps) {

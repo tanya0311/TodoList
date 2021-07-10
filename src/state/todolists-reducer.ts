@@ -1,9 +1,12 @@
 import { Dispatch } from "redux";
 import { v1 } from "uuid";
 import { todolistAPI, TodolistType } from "../api/todolist-api";
-import { FilterType } from "../AppWithRedux";
 import { AppRootStateType } from "./store";
 
+export type FilterType = "all" | "active" | "completed";
+export type TodolistDomainType = TodolistType & {
+  filter: FilterType;
+};
 // export type StateType = Array<TodolistType>;
 export type ActionType =
   | RemoveTLACType
@@ -24,9 +27,6 @@ export const CHANGE_TODOLIST_TITLE = "CHANGE-TODOLIST-TITLE";
 export const CHANGE_TODOLIST_FILTER = "CHANGE-TODOLIST-FILTER";
 export const SET_TODOLISTS = "SET-TODOLISTS";
 
-export type TodolistDomainType = TodolistType & {
-  filter: FilterType;
-};
 const initialState: Array<TodolistDomainType> = [];
 
 export const todoListReducer = (

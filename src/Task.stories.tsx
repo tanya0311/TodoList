@@ -24,13 +24,13 @@ const baseArgs = {
 
 TaskIsDoneExample.args = {
   ...baseArgs,
-  task:  { id: "1", title: "CSS",completed:false, status: TaskStatuses.New, todoListId: "todolistId1", description: '',
+  task:  { id: "1", title: "CSS", status: TaskStatuses.New, todoListId: "todolistId1", description: '',
   startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low },
 };
 export const TaskNotDoneExample = Template.bind({});
 
 TaskNotDoneExample.args = {
   ...baseArgs,
-  task: { id: "1", title: "CSS",completed:false, status: TaskStatuses.New, todoListId: "todolistId1", description: '',
+  task: { id: "1", title: "CSS", status: TaskStatuses.New, todoListId: "todolistId1", description: '',
   startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low },
 };

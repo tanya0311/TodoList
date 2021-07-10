@@ -2,7 +2,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { combineReducers, createStore } from "redux";
 import { v1 } from "uuid";
-import { TaskPriorities, TaskStatuses } from "./api/todolist-api";
+import { TaskPriorities, TaskStatuses } from "./api/todolist-api-2";
 import AppWithRedux from "./AppWithRedux";
 import { tasksReducer } from "./state/tasks-reducer";
 import { todoListReducer } from "./state/todolists-reducer";
@@ -13,7 +13,7 @@ const rootReducer = combineReducers({
   tasks: tasksReducer,
   todolists: todoListReducer,
 });
-
+ 
 export type AppRootStateType = ReturnType<typeof rootReducer>;
 
 const initialGlobalState = {
@@ -38,7 +38,7 @@ const initialGlobalState = {
       {
         id: "1",
         title: "CSS",
-        completed: false,
+        // completed: false,
         status: TaskStatuses.New,
         todoListId: "todolistId1",
         description: "",
@@ -53,7 +53,7 @@ const initialGlobalState = {
       {
         id: "1",
         title: "CSS",
-        completed: false,
+        // completed: false,
         status: TaskStatuses.New,
         todoListId: "todolistId1",
         description: "",

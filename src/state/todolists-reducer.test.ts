@@ -1,8 +1,7 @@
 import { v1 } from "uuid";
-import { FilterType } from "../AppWithRedux";
-// import { FilterType, TodolistType } from "../App";
 import {
   AddTLAC,
+  FilterType,
   RemoveTLAC,
   setTodolistsAC,
   TodolistDomainType,

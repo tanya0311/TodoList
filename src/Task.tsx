@@ -1,7 +1,7 @@
 import { Checkbox, IconButton } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import React, { ChangeEvent } from "react";
-import { TaskStatuses, TaskType } from "./api/todolist-api";
+import { TaskStatuses, TaskType } from "./api/todolist-api-2";
 import { EditableSpan } from "./EditableSpan";
 // import { TasksPopsType } from "./Todolist";
 
@@ -12,7 +12,7 @@ export type TaskPropsType = {
   changeTasks: (taskId: string, newIsDoneValue: TaskStatuses) => void;
   removeTasks: (taskId: string) => void;
 };
-
+ 
 export const Task = React.memo(
   ({ task, changeTask1Title, changeTasks, removeTasks }: TaskPropsType) => {
     // console.log("Task called");

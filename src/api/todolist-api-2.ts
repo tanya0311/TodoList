@@ -37,21 +37,34 @@ export type ResponseType<T = {}> = {
   fieldsErrors: [];
   data: T;
 };
-export type getItemsTasksType = {
+export enum TaskStatuses {
+  New = 0,
+  InProgress = 1,
+  Completed = 2,
+  Draft = 3,
+}
+export enum TaskPriorities {
+  Low = 0,
+  Middle = 1,
+  Hi = 2,
+  Urgently = 3,
+  Later = 4,
+}
+export type TaskType = {
   id: string;
   title: string;
-  description: null;
+  status: TaskStatuses;
   todoListId: string;
+  description: null | string;
+  startDate: null | string;
   order: number;
-  status: number;
-  priority: number;
-  startDate: null;
+  priority: TaskPriorities;
   deadline: null | string;
   addedDate: string;
 };
 
 export type getTasksResponseType = {
-  items: getItemsTasksType[];
+  items: TaskType[];
   totalCount: number;
   error: null;
 };
@@ -108,14 +121,14 @@ export const tasksApi = {
     return instance.delete<ResponseType>(`todo-lists/${idTL}/tasks/${idTask}`);
   },
   createTask(idTL: string, newTask: string) {
-    return instance.post<ResponseType<getItemsTasksType>>(
+    return instance.post<ResponseType<TaskType>>(
       `todo-lists/${idTL}/tasks`,
       { title: newTask }
     );
   },
 
   updateTask(idTL: string, idTask: string, model: updateTasksModelType) {
-    return instance.put<ResponseType<{ item: getItemsTasksType }>>(
+    return instance.put<ResponseType<{ item: TaskType }>>(
       `todo-lists/${idTL}/tasks/${idTask}`,
       model
     );

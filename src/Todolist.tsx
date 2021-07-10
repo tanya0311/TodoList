@@ -3,10 +3,10 @@ import { Delete } from "@material-ui/icons";
 import React, {  useCallback, useEffect} from "react";
 import { useDispatch } from "react-redux";
 import AddItemForm from "./AddItemForm";
-import { TaskStatuses, TaskType } from "./api/todolist-api";
-import { FilterType} from "./AppWithRedux";
+import { TaskStatuses, TaskType } from "./api/todolist-api-2";
 import { EditableSpan } from "./EditableSpan";
 import { fetchTasksTC } from "./state/tasks-reducer";
+import { FilterType } from "./state/todolists-reducer";
 import { Task } from "./Task";
 
 type TodolistPropsType = {
@@ -14,6 +14,7 @@ type TodolistPropsType = {
   tasks: Array<TaskType>;
   removeTasks: (id: string, todolistId: string) => void;
   changeFilter: (value: FilterType, todolistId: string) => void;
+  // addTask: (task: TaskType) => void;  // for AppWithReducers
   addTask: (title: string, todolistId: string) => void;
   changeTasks: (id: string, status: TaskStatuses, todolistId: string) => void;
   filter: FilterType;
@@ -31,6 +32,9 @@ const TodoList = React.memo((props: TodolistPropsType) => {
     dispatch(fetchTasksTC(props.id));
   }, []);
 
+  // const addTask = useCallback((task: TaskType) => {  //for AppWithReducers
+  //   props.addTask(task);
+  // }, []);
   const addTask = useCallback((title: string) => {
     props.addTask(title, props.id);
   }, []);

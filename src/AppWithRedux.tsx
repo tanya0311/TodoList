@@ -16,37 +16,22 @@ import { TaskStatuses, TaskType } from "./api/todolist-api";
 import "./App.css";
 import { AppRootStateType } from "./state/store";
 import {
-  addTaskAC,
   addTasksTC,
-  changeTaskStatusAC,
   changeTaskStatusTC,
-  changeTaskTitleAC,
   changeTaskTitleTC,
   deleteTasksTC,
-  removeTaskAC,
 } from "./state/tasks-reducer";
 import {
-  AddTLAC,
   ChangeTLFilterAC,
-  ChangeTLTitleAC,
   changeTodolistTitleTC,
   createTodolistTC,
   deleteTodolistTC,
   fetchTodolistsTC,
-  RemoveTLAC,
-  setTodolistsAC,
+  FilterType,
   TodolistDomainType,
-  todoListReducer,
 } from "./state/todolists-reducer";
 import TodoList from "./Todolist";
 
-export type FilterType = "all" | "active" | "completed";
-
-// export type TodolistType = {
-//   id: string;
-//   title: string;
-//   filter: FilterType;
-// };
 export type Task1Type = {
   [key: string]: Array<TaskType>;
 };
@@ -85,14 +70,14 @@ function AppWithRedux() {
     (value: FilterType, todolistId: string) => {
       dispatch(ChangeTLFilterAC(todolistId, value));
     },
-    [dispatch]
+    []
   );
 
   const changeTask1Title = useCallback(
     (id: string, newTitle: string, todolistId: string) => {
       dispatch(changeTaskTitleTC(id, newTitle, todolistId));
     },
-    [dispatch]
+    []
   );
 
   const addTodolist = useCallback(
@@ -100,7 +85,7 @@ function AppWithRedux() {
       let tunk = createTodolistTC(title);
       dispatch(tunk);
     },
-    [dispatch]
+    []
   );
 
   const removeTodolist = useCallback(
@@ -108,13 +93,13 @@ function AppWithRedux() {
       let tunk = deleteTodolistTC(todolistId);
       dispatch(tunk);
     },
-    [dispatch]
+    []
   );
   const changeTodolistTitle = useCallback(
     (todolistId: string, newTitle: string) => {
       dispatch(changeTodolistTitleTC(todolistId, newTitle));
     },
-    [dispatch]
+    []
   );
   return (
     <div className="App">
