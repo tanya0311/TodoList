@@ -14,7 +14,6 @@ type TodolistPropsType = {
   tasks: Array<TaskType>;
   removeTasks: (id: string, todolistId: string) => void;
   changeFilter: (value: FilterType, todolistId: string) => void;
-  // addTask: (task: TaskType) => void;  // for AppWithReducers
   addTask: (title: string, todolistId: string) => void;
   changeTasks: (id: string, status: TaskStatuses, todolistId: string) => void;
   filter: FilterType;

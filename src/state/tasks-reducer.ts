@@ -10,6 +10,7 @@ import {
   RemoveTLACType,
   REMOVE_TODOLIST,
   SetTodolistsActionType,
+  SET_TODOLISTS,
 } from "./todolists-reducer";
 
 // export type TasksType = {
@@ -54,7 +55,7 @@ export const tasksReducer = (
       return stateCopy;
       // return {...stateTasks, [action.todolistId]:action.tasks};
     }
-    case "SET-TODOLISTS": {
+    case SET_TODOLISTS: {
       const stateCopy = { ...stateTasks };
       action.todolists.forEach((tl) => {
         stateCopy[tl.id] = [];
