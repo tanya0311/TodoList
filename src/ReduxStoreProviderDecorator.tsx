@@ -3,20 +3,20 @@ import { Provider } from "react-redux";
 import { combineReducers, createStore } from "redux";
 import { v1 } from "uuid";
 import { TaskPriorities, TaskStatuses } from "./api/todolist-api";
-import AppWithRedux from "./AppWithRedux";
 import { tasksReducer } from "./state/tasks-reducer";
 import { todoListReducer } from "./state/todolists-reducer";
 import { applyMiddleware } from "redux";
 import thunkMiddleware from "redux-thunk";
+import { AppRootStateType } from "./state/store";
 
 const rootReducer = combineReducers({
   tasks: tasksReducer,
   todolists: todoListReducer,
 });
- 
-export type AppRootStateType = ReturnType<typeof rootReducer>;
 
-const initialGlobalState:AppRootStateType = {
+// export type AppRootStateType = ReturnType<typeof rootReducer>;
+
+const initialGlobalState: AppRootStateType = {
   todolists: [
     {
       id: "todolistId1",
@@ -36,17 +36,13 @@ const initialGlobalState:AppRootStateType = {
   tasks: {
     ["todolistId1"]: [
       {
-        id: "1",
+        id: v1(),
         title: "CSS",
-        // completed: false,
         status: TaskStatuses.New,
         todoListId: "todolistId1",
-        // description: "",
-        description: null,
-        startDate:null,
-        // startDate: "",
-        deadline: null,
-        // deadline: "",
+        description: "",
+        startDate: "",
+        deadline: "",
         addedDate: "",
         order: 0,
         priority: TaskPriorities.Low,
@@ -54,14 +50,13 @@ const initialGlobalState:AppRootStateType = {
     ],
     ["todolistId2"]: [
       {
-        id: "1",
-        title: "CSS",
-        // completed: false,
+        id: v1(),
+        title: "HTML",
         status: TaskStatuses.New,
-        todoListId: "todolistId1",
-        description: null,
-        startDate: null,
-        deadline: null,
+        todoListId: "todolistId2",
+        description: "",
+        startDate: "",
+        deadline: "",
         addedDate: "",
         order: 0,
         priority: TaskPriorities.Low,
@@ -72,8 +67,8 @@ const initialGlobalState:AppRootStateType = {
 
 export const storyBookStore = createStore(
   rootReducer,
-  //   applyMiddleware(thunkMiddleware),
-  initialGlobalState
+  applyMiddleware(thunkMiddleware)
+  // initialGlobalState
   // initialGlobalState as AppRootStateType
 );
 

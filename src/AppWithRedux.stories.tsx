@@ -8,10 +8,12 @@ export default {
   title: "TodoList/ AppWithRedux",
   component: AppWithRedux,
   decorators:[ReduxStoreProviderDecorator]
-} as Meta;
+// } as Meta;
+} ;
 
 const Template: Story = (args) => <AppWithRedux {...args} />;
 
 export const AppWithReduxExample = Template.bind({});
 
 AppWithReduxExample.args = {};
+
