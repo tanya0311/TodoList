@@ -2,6 +2,7 @@ import { Dispatch } from "redux";
 import { v1 } from "uuid";
 import { TaskStatuses, TaskType, todolistAPI, UpdateTaskModelType } from "../api/todolist-api";
 import { Task1Type } from "../AppWithRedux";
+import { setErrorAC, setStatusAC } from "./app-reducer";
 import { AppRootStateType } from "./store";
 // import { TasksPopsType } from "../Todolist";
 import {
@@ -170,10 +171,12 @@ export const setTasksAC = (tasks: Array<TaskType>, todolistId: string) => {
 // thunks
 export const fetchTasksTC = (todolistId: string) => {
   return (dispatch: Dispatch) => {
+    dispatch(setStatusAC('loading'))
     todolistAPI.getTasks(todolistId).then((res) => {
       // debugger
       const tasks = res.data.items;
       dispatch(setTasksAC(tasks, todolistId));
+      dispatch(setStatusAC('succeeded'))
     });
   };
 };
@@ -186,10 +189,22 @@ export const deleteTasksTC = (taskId: string, todolistId: string) => {
 };
 export const addTasksTC = (title: string, todolistId: string) => {
   return (dispatch: Dispatch) => {
+    dispatch(setStatusAC('loading'))
     todolistAPI.createTasks(todolistId, title).then((res) => {
+      if (res.data.resultCode === 0) {
       let task = res.data.data.item;
       dispatch(addTaskAC(task));
-    });
+      dispatch(setStatusAC('succeeded'))
+    }else {
+      if (res.data.messages.length) {
+          dispatch(setErrorAC(res.data.messages[0]))
+      } else {
+          dispatch(setErrorAC('Some error occurred'))
+      }
+      dispatch(setStatusAC('failed'))
+  }
+
+  });
   };
 };
 export const changeTaskStatusTC = (

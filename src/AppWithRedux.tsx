@@ -4,6 +4,7 @@ import {
   Container,
   Grid,
   IconButton,
+  LinearProgress,
   Paper,
   Toolbar,
   Typography,
@@ -14,6 +15,8 @@ import { useDispatch, useSelector } from "react-redux";
 import AddItemForm from "./AddItemForm";
 import { TaskStatuses, TaskType } from "./api/todolist-api";
 import "./App.css";
+import {ErrorSnackbar} from "./components/ErrorSnackbar/ErrorSnackbar";
+import { RequestStatusType } from "./state/app-reducer";
 import { AppRootStateType } from "./state/store";
 import {
   addTasksTC,
@@ -40,6 +43,7 @@ function AppWithRedux() {
     (state) => state.todolists
   );
   let tasks = useSelector<AppRootStateType, Task1Type>((state) => state.tasks);
+  const status = useSelector<AppRootStateType,RequestStatusType >( state => state.app.status)
   let dispatch = useDispatch();
 
   useEffect(() => {
@@ -104,6 +108,7 @@ function AppWithRedux() {
   );
   return (
     <div className="App">
+      <ErrorSnackbar/>
       <AppBar position="static">
         <Toolbar>
           <IconButton edge="start" color="inherit" aria-label="menu">
@@ -112,6 +117,7 @@ function AppWithRedux() {
           <Typography variant="h6">News</Typography>
           <Button color="inherit">Login</Button>
         </Toolbar>
+        {status === 'loading' && <LinearProgress color="secondary"/>}
       </AppBar>
 
       <Container fixed>

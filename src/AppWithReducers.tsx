@@ -44,8 +44,8 @@ function AppWithReducers() {
   let todolistId2 = v1();
 
   let [todoList, dispatchTodolist] = useReducer(todoListReducer, [
-    { id: todolistId1, title: "hello", filter: "all", addedDate: "", order: 0 },
-    { id: todolistId2, title: "123", filter: "all", addedDate: "", order: 0 },
+    { id: todolistId1, title: "hello", filter: "all", addedDate: "", order: 0 , entityStatus:'idle'},
+    { id: todolistId2, title: "123", filter: "all", addedDate: "", order: 0, entityStatus:'idle' },
     // { id:v1(), title: 'yes', filter: 'completed'}
   ]);
 

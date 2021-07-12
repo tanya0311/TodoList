@@ -1,11 +1,13 @@
 import { Dispatch } from "redux";
 import { v1 } from "uuid";
 import { todolistAPI, TodolistType } from "../api/todolist-api";
+import { RequestStatusType, setStatusAC } from "./app-reducer";
 import { AppRootStateType } from "./store";
 
 export type FilterType = "all" | "active" | "completed";
 export type TodolistDomainType = TodolistType & {
   filter: FilterType;
+  entityStatus: RequestStatusType;
 };
 // export type StateType = Array<TodolistType>;
 export type ActionType =
@@ -38,6 +40,7 @@ export const todoListReducer = (
       return action.todolists.map((tl) => ({
         ...tl,
         filter: "all",
+        entityStatus: "idle",
       }));
     }
     case REMOVE_TODOLIST:
@@ -47,6 +50,7 @@ export const todoListReducer = (
       const newTodolist: TodolistDomainType = {
         ...action.todolist,
         filter: "all",
+        entityStatus: "idle",
       };
       return [newTodolist, ...stateTL];
 
@@ -98,17 +102,21 @@ export const setTodolistsAC = (todolists: Array<TodolistType>) => {
 
 export const fetchTodolistsTC = () => {
   return (dispatch: Dispatch) => {
+    dispatch(setStatusAC("loading"));
     todolistAPI.getTodolists().then((res) => {
       // debugger
       dispatch(setTodolistsAC(res.data));
+      dispatch(setStatusAC("succeeded"));
     });
   };
 };
 
 export const createTodolistTC = (title: string) => {
   return (dispatch: Dispatch) => {
+    dispatch(setStatusAC("loading"));
     todolistAPI.createTodolist(title).then((res) => {
       dispatch(AddTLAC(res.data.data.item));
+      dispatch(setStatusAC("succeeded"));
     });
   };
 };
