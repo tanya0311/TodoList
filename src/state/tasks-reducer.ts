@@ -1,7 +1,13 @@
 import { Dispatch } from "redux";
 import { v1 } from "uuid";
-import { TaskStatuses, TaskType, todolistAPI, UpdateTaskModelType } from "../api/todolist-api";
+import {
+  TaskStatuses,
+  TaskType,
+  todolistAPI,
+  UpdateTaskModelType,
+} from "../api/todolist-api";
 import { Task1Type } from "../AppWithRedux";
+import { handleServerAppError, handleServerNetworkError } from "../utils/error-utils";
 import { setErrorAC, setStatusAC } from "./app-reducer";
 import { AppRootStateType } from "./store";
 // import { TasksPopsType } from "../Todolist";
@@ -171,12 +177,12 @@ export const setTasksAC = (tasks: Array<TaskType>, todolistId: string) => {
 // thunks
 export const fetchTasksTC = (todolistId: string) => {
   return (dispatch: Dispatch) => {
-    dispatch(setStatusAC('loading'))
+    dispatch(setStatusAC("loading"));
     todolistAPI.getTasks(todolistId).then((res) => {
       // debugger
       const tasks = res.data.items;
       dispatch(setTasksAC(tasks, todolistId));
-      dispatch(setStatusAC('succeeded'))
+      dispatch(setStatusAC("succeeded"));
     });
   };
 };
@@ -189,26 +195,29 @@ export const deleteTasksTC = (taskId: string, todolistId: string) => {
 };
 export const addTasksTC = (title: string, todolistId: string) => {
   return (dispatch: Dispatch) => {
-    dispatch(setStatusAC('loading'))
-    todolistAPI.createTasks(todolistId, title).then((res) => {
-      if (res.data.resultCode === 0) {
-      let task = res.data.data.item;
-      dispatch(addTaskAC(task));
-      dispatch(setStatusAC('succeeded'))
-    }else {
-      if (res.data.messages.length) {
-          dispatch(setErrorAC(res.data.messages[0]))
-      } else {
-          dispatch(setErrorAC('Some error occurred'))
-      }
-      dispatch(setStatusAC('failed'))
-  }
-
-  }).catch(error => {
-    // debugger
-    dispatch(setErrorAC(error.message))
-    dispatch(setStatusAC('failed'))
-  });
+    dispatch(setStatusAC("loading"));
+    todolistAPI
+      .createTasks(todolistId, title)
+      .then((res) => {
+        if (res.data.resultCode === 0) {
+          let task = res.data.data.item;
+          dispatch(addTaskAC(task));
+          dispatch(setStatusAC("succeeded"));
+        } else {
+          if (res.data.messages.length) {
+            dispatch(setErrorAC(res.data.messages[0]));
+          } else {
+            dispatch(setErrorAC("Some error occurred"));
+          }
+          dispatch(setStatusAC("failed"));
+        }
+      })
+      .catch((error) => {
+        // debugger
+        handleServerNetworkError(error, dispatch)
+        // dispatch(setErrorAC(error.message));
+        // dispatch(setStatusAC("failed"));
+      });
   };
 };
 export const changeTaskStatusTC = (
@@ -226,25 +235,26 @@ export const changeTaskStatusTC = (
     if (updateTask) {
       // const model: UpdateTaskModelType = { ...updateTask, status };
       const model: UpdateTaskModelType = {
-            title: updateTask.title,
-            startDate: updateTask.startDate,
-            priority: updateTask.priority,
-            description: updateTask.description,
-            deadline: updateTask.deadline,
-            status: status,
-          };
+        title: updateTask.title,
+        startDate: updateTask.startDate,
+        priority: updateTask.priority,
+        description: updateTask.description,
+        deadline: updateTask.deadline,
+        status: status,
+      };
       todolistAPI.updateTask(todolistId, taskId, model).then((res) => {
         const newTask = res.data.data.item;
-        dispatch(changeTaskStatusAC(newTask.id, newTask.status, newTask.todoListId));
+        dispatch(
+          changeTaskStatusAC(newTask.id, newTask.status, newTask.todoListId)
+        );
       });
     }
   };
 };
 
-
 export const changeTaskTitleTC = (
   taskId: string,
-  title:  string,
+  title: string,
   todolistId: string
 ) => {
   return (dispatch: Dispatch, getState: () => AppRootStateType) => {
@@ -257,17 +267,32 @@ export const changeTaskTitleTC = (
     if (updateTask) {
       // const model: UpdateTaskModelType = { ...updateTask, status };
       const model: UpdateTaskModelType = {
-            title: title,
-            startDate: updateTask.startDate,
-            priority: updateTask.priority,
-            description: updateTask.description,
-            deadline: updateTask.deadline,
-            status: updateTask.status,
-          };
+        title: title,
+        startDate: updateTask.startDate,
+        priority: updateTask.priority,
+        description: updateTask.description,
+        deadline: updateTask.deadline,
+        status: updateTask.status,
+      };
       todolistAPI.updateTask(todolistId, taskId, model).then((res) => {
-        const newTask = res.data.data.item;
-        dispatch(changeTaskTitleAC(newTask.id, newTask.title, newTask.todoListId));
-      });
+        if (res.data.resultCode === 0) {
+          const newTask = res.data.data.item;
+          dispatch(
+            changeTaskTitleAC(newTask.id, newTask.title, newTask.todoListId)
+          );
+        } else {
+          handleServerAppError(res.data, dispatch)
+        //   if (res.data.messages.length) {
+        //     dispatch(setErrorAC(res.data.messages[0]));
+        //   } else {
+        //     dispatch(setErrorAC("Some error occurred"));
+        //   }
+        //   dispatch(setStatusAC("failed"));
+        }
+      }).catch((error) => {
+        // debugger
+        handleServerNetworkError(error, dispatch)
+      });;
     }
   };
 };
