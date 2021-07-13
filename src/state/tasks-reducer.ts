@@ -204,6 +204,10 @@ export const addTasksTC = (title: string, todolistId: string) => {
       dispatch(setStatusAC('failed'))
   }
 
+  }).catch(error => {
+    // debugger
+    dispatch(setErrorAC(error.message))
+    dispatch(setStatusAC('failed'))
   });
   };
 };

@@ -5,17 +5,18 @@ import { TaskType } from "./api/todolist-api";
 
 export type AddItemFormProps = {
   addItem: (title: string) => void;
+  disabled?:boolean
 };
-const AddItemForm = React.memo((props: AddItemFormProps) =>{
+const AddItemForm = React.memo(({addItem, disabled = false}: AddItemFormProps) =>{
 //  const AddItemForm = React.memo(function(props: AddItemFormProps) {
   let [newtitle, setNewtitle] = useState("");
   let [error, setError] = useState<string | null>(null);
 
   // console.log("AddItemForm called");
 
-  function addItem() {
+  function addItemHandler() {
     if (newtitle.trim() !== "") {
-      props.addItem(newtitle);
+      addItem(newtitle);
       setNewtitle("");
     } else {
       setError("field is required");
@@ -25,7 +26,7 @@ const AddItemForm = React.memo((props: AddItemFormProps) =>{
   function onKeyPressHandler(e: KeyboardEvent<HTMLInputElement>) {
     error && setError(null);
     if (e.charCode === 13) {
-      addItem();
+      addItemHandler();
       setNewtitle("");
     }
   }
@@ -39,6 +40,7 @@ const AddItemForm = React.memo((props: AddItemFormProps) =>{
       <TextField
         variant={"outlined"}
         value={newtitle}
+        disabled={disabled}
         // label={newtitle}
         label="Задача"
         error={!!error}
@@ -46,7 +48,7 @@ const AddItemForm = React.memo((props: AddItemFormProps) =>{
         onChange={onChangeHandler}
         onKeyPress={onKeyPressHandler}
       />
-      <IconButton onClick={addItem} color={"primary"}>
+      <IconButton onClick={addItemHandler} color={"primary"} disabled={disabled}>
         {/* {" "} */}
         <ControlPoint />
       </IconButton>

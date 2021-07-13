@@ -15,13 +15,17 @@ export type ActionType =
   | AddTLACType
   | ChangeTLTitleACType
   | ChangeTLFilterACType
-  | SetTodolistsActionType;
+  | SetTodolistsActionType
+  | ChangeTLEntitySatatusACType;
 
 export type RemoveTLACType = ReturnType<typeof RemoveTLAC>;
 export type AddTLACType = ReturnType<typeof AddTLAC>;
 export type ChangeTLTitleACType = ReturnType<typeof ChangeTLTitleAC>;
 export type ChangeTLFilterACType = ReturnType<typeof ChangeTLFilterAC>;
 export type SetTodolistsActionType = ReturnType<typeof setTodolistsAC>;
+export type ChangeTLEntitySatatusACType = ReturnType<
+  typeof changeTLEntitySatatusAC
+>;
 
 export const REMOVE_TODOLIST = "REMOVE-TODOLIST";
 export const ADD_TODOLIST = "ADD-TODOLIST";
@@ -68,6 +72,10 @@ export const todoListReducer = (
       return stateTL.map((el) =>
         el.id === action.todolistId ? { ...el, filter: action.filter } : el
       );
+    case "CHANGE-TODOLIST-ENTITY-STATUS":
+      return stateTL.map((el) =>
+        el.id === action.todolistId ? { ...el, entityStatus: action.status } : el
+      );
     default:
       return stateTL;
   }
@@ -94,6 +102,14 @@ export const ChangeTLFilterAC = (todolistId: string, filter: FilterType) => ({
   type: "CHANGE-TODOLIST-FILTER" as const,
   todolistId,
   filter,
+});
+export const changeTLEntitySatatusAC = (
+  todolistId: string,
+  status: RequestStatusType
+) => ({
+  type: "CHANGE-TODOLIST-ENTITY-STATUS" as const,
+  todolistId,
+  status,
 });
 
 export const setTodolistsAC = (todolists: Array<TodolistType>) => {
@@ -129,8 +145,11 @@ export const changeTodolistTitleTC = (todolistId: string, title: string) => {
 };
 export const deleteTodolistTC = (todolistId: string) => {
   return (dispatch: Dispatch) => {
+    dispatch(setStatusAC("loading"));
+    dispatch(changeTLEntitySatatusAC(todolistId, "loading" ));
     todolistAPI.deleteTodolist(todolistId).then((res) => {
       dispatch(RemoveTLAC(todolistId));
+      dispatch(setStatusAC("succeeded"));
     });
   };
 };

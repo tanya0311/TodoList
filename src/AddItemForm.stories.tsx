@@ -14,5 +14,7 @@ export const AddItemFormForExampl = Template.bind({});
 AddItemFormForExampl.args = {
    addItem:action('Button inside')
 };
+export const AddItemFormDisabledExampl = (props: any) => <AddItemForm disabled={true}   addItem={action('Button inside')}/>;
+
 
 
