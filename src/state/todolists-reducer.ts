@@ -1,37 +1,12 @@
 import { Dispatch } from "redux";
 import { v1 } from "uuid";
 import { todolistAPI, TodolistType } from "../api/todolist-api";
-import { RequestStatusType, setStatusAC } from "./app-reducer";
+import {
+  AppActionsType,
+  RequestStatusType,
+  setAppStatusAC,
+} from "./app-reducer";
 import { AppRootStateType } from "./store";
-
-export type FilterType = "all" | "active" | "completed";
-export type TodolistDomainType = TodolistType & {
-  filter: FilterType;
-  entityStatus: RequestStatusType;
-};
-// export type StateType = Array<TodolistType>;
-export type ActionType =
-  | RemoveTLACType
-  | AddTLACType
-  | ChangeTLTitleACType
-  | ChangeTLFilterACType
-  | SetTodolistsActionType
-  | ChangeTLEntitySatatusACType;
-
-export type RemoveTLACType = ReturnType<typeof RemoveTLAC>;
-export type AddTLACType = ReturnType<typeof AddTLAC>;
-export type ChangeTLTitleACType = ReturnType<typeof ChangeTLTitleAC>;
-export type ChangeTLFilterACType = ReturnType<typeof ChangeTLFilterAC>;
-export type SetTodolistsActionType = ReturnType<typeof setTodolistsAC>;
-export type ChangeTLEntitySatatusACType = ReturnType<
-  typeof changeTLEntitySatatusAC
->;
-
-export const REMOVE_TODOLIST = "REMOVE-TODOLIST";
-export const ADD_TODOLIST = "ADD-TODOLIST";
-export const CHANGE_TODOLIST_TITLE = "CHANGE-TODOLIST-TITLE";
-export const CHANGE_TODOLIST_FILTER = "CHANGE-TODOLIST-FILTER";
-export const SET_TODOLISTS = "SET-TODOLISTS";
 
 const initialState: Array<TodolistDomainType> = [];
 
@@ -40,17 +15,17 @@ export const todoListReducer = (
   action: ActionType
 ): Array<TodolistDomainType> => {
   switch (action.type) {
-    case SET_TODOLISTS: {
+    case "SET-TODOLISTS": {
       return action.todolists.map((tl) => ({
         ...tl,
         filter: "all",
         entityStatus: "idle",
       }));
     }
-    case REMOVE_TODOLIST:
+    case "REMOVE-TODOLIST":
       return stateTL.filter((tl) => tl.id !== action.todolistId);
 
-    case ADD_TODOLIST:
+    case "ADD-TODOLIST":
       const newTodolist: TodolistDomainType = {
         ...action.todolist,
         filter: "all",
@@ -58,29 +33,27 @@ export const todoListReducer = (
       };
       return [newTodolist, ...stateTL];
 
-    case CHANGE_TODOLIST_TITLE:
-      const todolist = stateTL.find((tl) => tl.id === action.todolistId);
-      if (todolist) {
-        todolist.title = action.newTitle;
-        return [...stateTL];
-      } else {
-        return [...stateTL];
-      }
-    // return stateTL.map( el=> el.id === action.todolistId ? {...el, title: action.newTitle} : el) ;
+    case "CHANGE-TODOLIST-TITLE":
+      return stateTL.map((el) =>
+        el.id === action.todolistId ? { ...el, title: action.newTitle } : el
+      );
 
-    case CHANGE_TODOLIST_FILTER:
+    case "CHANGE-TODOLIST-FILTER":
       return stateTL.map((el) =>
         el.id === action.todolistId ? { ...el, filter: action.filter } : el
       );
     case "CHANGE-TODOLIST-ENTITY-STATUS":
       return stateTL.map((el) =>
-        el.id === action.todolistId ? { ...el, entityStatus: action.status } : el
+        el.id === action.todolistId
+          ? { ...el, entityStatus: action.status }
+          : el
       );
     default:
       return stateTL;
   }
 };
 
+// actions
 export const RemoveTLAC = (id: string) => {
   return {
     type: "REMOVE-TODOLIST" as const,
@@ -116,40 +89,68 @@ export const setTodolistsAC = (todolists: Array<TodolistType>) => {
   return { type: "SET-TODOLISTS" as const, todolists };
 };
 
+// thunks
 export const fetchTodolistsTC = () => {
-  return (dispatch: Dispatch) => {
-    dispatch(setStatusAC("loading"));
+  return (dispatch: Dispatch<ActionType>) => {
+    dispatch(setAppStatusAC("loading"));
     todolistAPI.getTodolists().then((res) => {
-      // debugger
       dispatch(setTodolistsAC(res.data));
-      dispatch(setStatusAC("succeeded"));
+      dispatch(setAppStatusAC("succeeded"));
     });
   };
 };
 
 export const createTodolistTC = (title: string) => {
-  return (dispatch: Dispatch) => {
-    dispatch(setStatusAC("loading"));
+  return (dispatch: Dispatch<ActionType>) => {
+    dispatch(setAppStatusAC("loading"));
     todolistAPI.createTodolist(title).then((res) => {
       dispatch(AddTLAC(res.data.data.item));
-      dispatch(setStatusAC("succeeded"));
+      dispatch(setAppStatusAC("succeeded"));
     });
   };
 };
 export const changeTodolistTitleTC = (todolistId: string, title: string) => {
-  return (dispatch: Dispatch) => {
+  return (dispatch: Dispatch<ActionType>) => {
+    dispatch(setAppStatusAC("loading"));
     todolistAPI.updateTodolist(todolistId, title).then((res) => {
       dispatch(ChangeTLTitleAC(todolistId, title));
+      dispatch(setAppStatusAC("succeeded"));
     });
   };
 };
 export const deleteTodolistTC = (todolistId: string) => {
-  return (dispatch: Dispatch) => {
-    dispatch(setStatusAC("loading"));
-    dispatch(changeTLEntitySatatusAC(todolistId, "loading" ));
+  return (dispatch: Dispatch<ActionType>) => {
+    dispatch(setAppStatusAC("loading"));
+    dispatch(changeTLEntitySatatusAC(todolistId, "loading"));
     todolistAPI.deleteTodolist(todolistId).then((res) => {
       dispatch(RemoveTLAC(todolistId));
-      dispatch(setStatusAC("succeeded"));
+      dispatch(setAppStatusAC("succeeded"));
     });
   };
 };
+
+// type state
+export type FilterType = "all" | "active" | "completed";
+export type TodolistDomainType = TodolistType & {
+  filter: FilterType;
+  entityStatus: RequestStatusType;
+};
+
+// type  dispatch actions
+export type ActionType =
+  | RemoveTLACType
+  | AddTLACType
+  | ChangeTLTitleACType
+  | ChangeTLFilterACType
+  | SetTodolistsACType
+  | ChangeTLEntitySatatusACType
+  | AppActionsType;
+
+export type RemoveTLACType = ReturnType<typeof RemoveTLAC>;
+export type AddTLACType = ReturnType<typeof AddTLAC>;
+export type ChangeTLTitleACType = ReturnType<typeof ChangeTLTitleAC>;
+export type ChangeTLFilterACType = ReturnType<typeof ChangeTLFilterAC>;
+export type SetTodolistsACType = ReturnType<typeof setTodolistsAC>;
+export type ChangeTLEntitySatatusACType = ReturnType<
+  typeof changeTLEntitySatatusAC
+>;
