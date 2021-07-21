@@ -2,11 +2,17 @@ import { Dispatch } from "redux";
 import { v1 } from "uuid";
 import { todolistAPI, TodolistType } from "../api/todolist-api";
 import {
+  handleServerAppError,
+  handleServerNetworkError,
+} from "../utils/error-utils";
+import {
   AppActionsType,
   RequestStatusType,
+  setAppErrorAC,
   setAppStatusAC,
 } from "./app-reducer";
 import { AppRootStateType } from "./store";
+import { AxiosError } from "axios";
 
 const initialState: Array<TodolistDomainType> = [];
 
@@ -93,39 +99,73 @@ export const setTodolistsAC = (todolists: Array<TodolistType>) => {
 export const fetchTodolistsTC = () => {
   return (dispatch: Dispatch<ActionType>) => {
     dispatch(setAppStatusAC("loading"));
-    todolistAPI.getTodolists().then((res) => {
-      dispatch(setTodolistsAC(res.data));
-      dispatch(setAppStatusAC("succeeded"));
-    });
+    todolistAPI
+      .getTodolists()
+      .then((res) => {
+        dispatch(setTodolistsAC(res.data));
+        dispatch(setAppStatusAC("succeeded"));
+      })
+      .catch((error: AxiosError) => {
+        handleServerNetworkError(error, dispatch);
+      });
   };
 };
 
 export const createTodolistTC = (title: string) => {
   return (dispatch: Dispatch<ActionType>) => {
     dispatch(setAppStatusAC("loading"));
-    todolistAPI.createTodolist(title).then((res) => {
-      dispatch(AddTLAC(res.data.data.item));
-      dispatch(setAppStatusAC("succeeded"));
-    });
+    todolistAPI
+      .createTodolist(title)
+      .then((res) => {
+        if (res.data.resultCode === 0) {
+          dispatch(AddTLAC(res.data.data.item));
+          dispatch(setAppStatusAC("succeeded"));
+        } else {
+          handleServerAppError(res.data, dispatch);
+          // if (res.data.messages.length) {
+          //   dispatch(setAppErrorAC(res.data.messages[0]));
+          // } else {
+          //   dispatch(setAppErrorAC("Some error occurred"));
+          // }
+          // dispatch(setAppStatusAC("failed"));
+        }
+      })
+      .catch((error: AxiosError) => {
+        handleServerNetworkError(error, dispatch);
+      });
   };
 };
 export const changeTodolistTitleTC = (todolistId: string, title: string) => {
   return (dispatch: Dispatch<ActionType>) => {
     dispatch(setAppStatusAC("loading"));
-    todolistAPI.updateTodolist(todolistId, title).then((res) => {
-      dispatch(ChangeTLTitleAC(todolistId, title));
-      dispatch(setAppStatusAC("succeeded"));
-    });
+    todolistAPI
+      .updateTodolist(todolistId, title)
+      .then((res) => {
+        if (res.data.resultCode === 0) {
+          dispatch(ChangeTLTitleAC(todolistId, title));
+          dispatch(setAppStatusAC("succeeded"));
+        } else {
+          handleServerAppError(res.data, dispatch);
+        }
+      })
+      .catch((error: AxiosError) => {
+        handleServerNetworkError(error, dispatch);
+      });
   };
 };
 export const deleteTodolistTC = (todolistId: string) => {
   return (dispatch: Dispatch<ActionType>) => {
     dispatch(setAppStatusAC("loading"));
     dispatch(changeTLEntitySatatusAC(todolistId, "loading"));
-    todolistAPI.deleteTodolist(todolistId).then((res) => {
-      dispatch(RemoveTLAC(todolistId));
-      dispatch(setAppStatusAC("succeeded"));
-    });
+    todolistAPI
+      .deleteTodolist(todolistId)
+      .then((res) => {
+        dispatch(RemoveTLAC(todolistId));
+        dispatch(setAppStatusAC("succeeded"));
+      })
+      .catch((error: AxiosError) => {
+        handleServerNetworkError(error, dispatch);
+      });
   };
 };
 

@@ -11,22 +11,26 @@ function Alert(props: AlertProps) {
 
 export function ErrorSnackbar() {
   // const [open, setOpen] = React.useState(true)
-  const dispatch=useDispatch()
+  const error = useSelector<AppRootStateType, string | null>(
+    (state) => state.app.error
+  );
+  const dispatch = useDispatch();
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === "clickaway") {
       return;
     }
-    dispatch(setAppErrorAC(null))
+    dispatch(setAppErrorAC(null));
     //  setOpen(false)
   };
-  
-  const error = useSelector<AppRootStateType, string | null>(
-    (state) => state.app.error
-  );
-//   const isOpen = error !== null;
+
+  //   const isOpen = error !== null;
   return (
-    <Snackbar open={error !== null} autoHideDuration={6000} onClose={handleClose}>
+    <Snackbar
+      open={error !== null}
+      autoHideDuration={6000}
+      onClose={handleClose}
+    >
       <Alert onClose={handleClose} severity="error">
         {/* This is a success message! */}
         {error}

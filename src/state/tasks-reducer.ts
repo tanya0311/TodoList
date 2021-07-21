@@ -18,6 +18,7 @@ import {
   RemoveTLACType,
   SetTodolistsACType,
 } from "./todolists-reducer";
+import { AxiosError } from "axios";
 
 const initialState: Task1Type = {};
 
@@ -149,21 +150,31 @@ export const setTasksAC = (tasks: Array<TaskType>, todolistId: string) => {
 export const fetchTasksTC = (todolistId: string) => {
   return (dispatch: Dispatch<ActionType>) => {
     dispatch(setAppStatusAC("loading"));
-    todolistAPI.getTasks(todolistId).then((res) => {
-      // debugger
-      const tasks = res.data.items;
-      dispatch(setTasksAC(tasks, todolistId));
-      dispatch(setAppStatusAC("succeeded"));
-    });
+    todolistAPI
+      .getTasks(todolistId)
+      .then((res) => {
+        // debugger
+        const tasks = res.data.items;
+        dispatch(setTasksAC(tasks, todolistId));
+        dispatch(setAppStatusAC("succeeded"));
+      })
+      .catch((error: AxiosError) => {
+        handleServerNetworkError(error, dispatch);
+      });
   };
 };
 export const deleteTasksTC = (taskId: string, todolistId: string) => {
   return (dispatch: Dispatch<ActionType>) => {
     dispatch(setAppStatusAC("loading"));
-    todolistAPI.deleteTask(todolistId, taskId).then((res) => {
-      dispatch(removeTaskAC(taskId, todolistId));
-      dispatch(setAppStatusAC("succeeded"));
-    });
+    todolistAPI
+      .deleteTask(todolistId, taskId)
+      .then((res) => {
+        dispatch(removeTaskAC(taskId, todolistId));
+        dispatch(setAppStatusAC("succeeded"));
+      })
+      .catch((error: AxiosError) => {
+        handleServerNetworkError(error, dispatch);
+      });
   };
 };
 export const addTasksTC = (title: string, todolistId: string) => {
@@ -177,16 +188,10 @@ export const addTasksTC = (title: string, todolistId: string) => {
           dispatch(addTaskAC(task));
           dispatch(setAppStatusAC("succeeded"));
         } else {
-          if (res.data.messages.length) {
-            dispatch(setAppErrorAC(res.data.messages[0]));
-          } else {
-            dispatch(setAppErrorAC("Some error occurred"));
-          }
-          dispatch(setAppStatusAC("failed"));
+          handleServerAppError(res.data, dispatch);
         }
       })
       .catch((error) => {
-        // debugger
         handleServerNetworkError(error, dispatch);
         // dispatch(setErrorAC(error.message));
         // dispatch(setStatusAC("failed"));
@@ -216,13 +221,18 @@ export const changeTaskStatusTC = (
         status: status,
       };
       dispatch(setAppStatusAC("loading"));
-      todolistAPI.updateTask(todolistId, taskId, model).then((res) => {
-        const newTask = res.data.data.item;
-        dispatch(
-          changeTaskStatusAC(newTask.id, newTask.status, newTask.todoListId)
-        );
-        dispatch(setAppStatusAC("succeeded"));
-      });
+      todolistAPI
+        .updateTask(todolistId, taskId, model)
+        .then((res) => {
+          const newTask = res.data.data.item;
+          dispatch(
+            changeTaskStatusAC(newTask.id, newTask.status, newTask.todoListId)
+          );
+          dispatch(setAppStatusAC("succeeded"));
+        })
+        .catch((error: AxiosError) => {
+          handleServerNetworkError(error, dispatch);
+        });
     }
   };
 };
@@ -261,16 +271,9 @@ export const changeTaskTitleTC = (
             dispatch(setAppStatusAC("succeeded"));
           } else {
             handleServerAppError(res.data, dispatch);
-            //   if (res.data.messages.length) {
-            //     dispatch(setErrorAC(res.data.messages[0]));
-            //   } else {
-            //     dispatch(setErrorAC("Some error occurred"));
-            //   }
-            //   dispatch(setStatusAC("failed"));
           }
         })
-        .catch((error) => {
-          // debugger
+        .catch((error: AxiosError) => {
           handleServerNetworkError(error, dispatch);
         });
     }
