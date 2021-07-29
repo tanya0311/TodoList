@@ -44,6 +44,7 @@ function App() {
         priority: TaskPriorities.Low,
         deadline: "",
         addedDate: "",
+        entityStatus: "idle"
       },
       {
         id: v1(),
@@ -56,6 +57,7 @@ function App() {
         priority: TaskPriorities.Low,
         deadline: "",
         addedDate: "",
+        entityStatus: "idle"
       },
       {
         id: v1(),
@@ -68,6 +70,7 @@ function App() {
         priority: TaskPriorities.Low,
         deadline: "",
         addedDate: "",
+        entityStatus: "idle"
       },
     ],
     [todolistId2]: [
@@ -82,6 +85,7 @@ function App() {
         priority: TaskPriorities.Low,
         deadline: "",
         addedDate: "",
+        entityStatus: "idle"
       },
       {
         id: v1(),
@@ -94,6 +98,7 @@ function App() {
         priority: TaskPriorities.Low,
         deadline: "",
         addedDate: "",
+        entityStatus: "idle"
       },
       {
         id: v1(),
@@ -106,6 +111,7 @@ function App() {
         priority: TaskPriorities.Low,
         deadline: "",
         addedDate: "",
+        entityStatus: "idle"
       },
     ],
   });
@@ -129,6 +135,7 @@ function App() {
       priority: TaskPriorities.Low,
       deadline: "",
       addedDate: "",
+      entityStatus: "idle"
     };
     let tasks2 = task1[todolistId];
     let newTasks = [newtask, ...tasks2];

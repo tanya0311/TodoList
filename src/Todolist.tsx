@@ -116,6 +116,8 @@ const TodoList = React.memo(({ demo = false, ...props }: TodolistPropsType) => {
             changeTask1Title={onChangTitleHandler}
             changeTasks={onChangeTaskSatatus}
             removeTasks={removeTask}
+            //!    ///////////////
+            // entityStatus={props.todolist.entityStatus}
           />
         ))}
       </ul>

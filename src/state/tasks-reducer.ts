@@ -11,7 +11,12 @@ import {
   handleServerAppError,
   handleServerNetworkError,
 } from "../utils/error-utils";
-import { AppActionsType, setAppErrorAC, setAppStatusAC } from "./app-reducer";
+import {
+  AppActionsType,
+  RequestStatusType,
+  setAppErrorAC,
+  setAppStatusAC,
+} from "./app-reducer";
 import { AppRootStateType } from "./store";
 import {
   AddTLACType,
@@ -94,6 +99,14 @@ export const tasksReducer = (
       delete copyStateTasks[action.todolistId];
       return copyStateTasks;
     }
+    //!    ///////////////
+    case "CHANGE-TASK-ENTITY-STATUS": {
+      let copyStateTasks = { ...stateTasks };
+      let entityStatusTask = copyStateTasks[action.todolistId].map((el) =>
+        el.id === action.taskId ? { ...el, entityStatus: action.status } : el
+      );
+      return { ...stateTasks, [action.todolistId]: entityStatusTask };
+    }
     default:
       return stateTasks;
   }
@@ -144,6 +157,18 @@ export const changeTaskTitleAC = (
 export const setTasksAC = (tasks: Array<TaskType>, todolistId: string) => {
   return { type: "SET-TASKS", tasks, todolistId } as const;
 };
+
+//!    ///////////////
+export const changeTaskEntitySatatusAC = (
+  todolistId: string,
+  taskId: string,
+  status: RequestStatusType
+) => ({
+  type: "CHANGE-TASK-ENTITY-STATUS" as const,
+  todolistId,
+  taskId,
+  status,
+});
 
 //!    !!!!!!!!!!!!!!!!!!!
 // thunks
@@ -290,10 +315,14 @@ export type ActionType =
   | RemoveTLACType
   | SetTodolistsACType
   | SetTasksActionType
-  | AppActionsType;
+  | AppActionsType
+  | ChangeTaskEntitySatatusACType;
 
 export type RemoveTasksACType = ReturnType<typeof removeTaskAC>;
 export type AddTasksACType = ReturnType<typeof addTaskAC>;
 export type ChangeStatusTasksACType = ReturnType<typeof changeTaskStatusAC>;
 export type ChangeStatusitleACType = ReturnType<typeof changeTaskTitleAC>;
 export type SetTasksActionType = ReturnType<typeof setTasksAC>;
+export type ChangeTaskEntitySatatusACType = ReturnType<
+  typeof changeTaskEntitySatatusAC
+>;

@@ -3,6 +3,7 @@ import { Delete } from "@material-ui/icons";
 import React, { ChangeEvent } from "react";
 import { TaskStatuses, TaskType } from "./api/todolist-api";
 import { EditableSpan } from "./EditableSpan";
+import { RequestStatusType } from "./state/app-reducer";
 // import { TasksPopsType } from "./Todolist";
 
 export type TaskPropsType = {
@@ -11,6 +12,7 @@ export type TaskPropsType = {
   changeTask1Title: (taskId: string, newValue: string) => void;
   changeTasks: (taskId: string, newIsDoneValue: TaskStatuses) => void;
   removeTasks: (taskId: string) => void;
+  // entityStatus:  RequestStatusType;
 };
  
 export const Task = React.memo(
@@ -36,10 +38,10 @@ export const Task = React.memo(
           onChange={onChangeTaskSatatus}
         />
 
-        <EditableSpan title={task.title} onChange={onChangTitleHandler} />
+        <EditableSpan title={task.title} onChange={onChangTitleHandler} disabled={task.entityStatus === 'loading'}/>
 
         <IconButton onClick={removeTask}>
-          <Delete />
+          <Delete  />
         </IconButton>
       </li>
     );
