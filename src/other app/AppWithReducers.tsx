@@ -11,13 +11,13 @@ import {
 import { Menu } from "@material-ui/icons";
 import React, { useReducer } from "react";
 import { v1 } from "uuid";
-import AddItemForm from "./AddItemForm";
+import AddItemForm from "../components/AddItemForm/AddItemForm";
 import {
   TaskPriorities,
   TaskStatuses,
   TaskType,
   TodolistType,
-} from "./api/todolist-api";
+} from "../api/todolist-api";
 import "./App.css";
 import {
   addTaskAC,
@@ -25,7 +25,7 @@ import {
   changeTaskTitleAC,
   removeTaskAC,
   tasksReducer,
-} from "./state/tasks-reducer";
+} from "../state/tasks-reducer";
 import {
   AddTLAC,
   ChangeTLFilterAC,
@@ -33,8 +33,8 @@ import {
   FilterType,
   RemoveTLAC,
   todoListReducer,
-} from "./state/todolists-reducer";
-import TodoList from "./Todolist";
+} from "../state/todolists-reducer";
+import TodoList from "../components/Todolist/Todolist";
 
 export type Task1Type = {
   [key: string]: Array<TaskType>;

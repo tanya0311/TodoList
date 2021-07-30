@@ -11,11 +11,12 @@ import {
 import { Menu } from "@material-ui/icons";
 import React, { useState } from "react";
 import { v1 } from "uuid";
-import AddItemForm from "./AddItemForm";
-import { TaskPriorities, TaskStatuses, TaskType } from "./api/todolist-api";
+import AddItemForm from "../components/AddItemForm/AddItemForm";
+import { TaskPriorities, TaskStatuses, TaskType } from "../api/todolist-api";
 import "./App.css";
-import { FilterType, TodolistDomainType } from "./state/todolists-reducer";
-import TodoList from "./Todolist";
+import { FilterType, TodolistDomainType } from "../state/todolists-reducer";
+import TodoList from "../components/Todolist/Todolist";
+
 
 export type Task1Type = {
   [key: string]: Array<TaskType>;

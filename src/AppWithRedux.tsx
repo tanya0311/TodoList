@@ -12,7 +12,7 @@ import {
 import { Menu } from "@material-ui/icons";
 import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import AddItemForm from "./AddItemForm";
+import AddItemForm from "./components/AddItemForm/AddItemForm";
 import { TaskStatuses, TaskType } from "./api/todolist-api";
 import "./App.css";
 import { ErrorSnackbar } from "./components/ErrorSnackbar/ErrorSnackbar";
@@ -33,7 +33,7 @@ import {
   FilterType,
   TodolistDomainType,
 } from "./state/todolists-reducer";
-import TodoList from "./Todolist";
+import TodoList from "./components/Todolist/Todolist";
 
 type AppType = {
   demo?: boolean; // для storybook
