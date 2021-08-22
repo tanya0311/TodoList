@@ -10,11 +10,13 @@ import { useFormik } from 'formik'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
+import { loginTC } from '../../state/auth-reduser'
 import { AppRootStateType } from '../../state/store'
 
 export const Login = () => {
   
-
+    const isLoginIn=useSelector<AppRootStateType, boolean>(state=> state.authMe.isLoggedIn)
+    const dispath = useDispatch()
  
     type FormikErrorType = {
        email?: string
@@ -43,14 +45,18 @@ export const Login = () => {
            return errors;
        },
        onSubmit: values => {
-
+          // debugger
+          dispath(loginTC(values))
  
            formik.resetForm()
        },
     })
     
  
-
+    if (isLoginIn){
+       return <Redirect to={'/'}/>
+    }
+    
    return (
      <Grid container justify="center">
        <Grid item xs={4}>

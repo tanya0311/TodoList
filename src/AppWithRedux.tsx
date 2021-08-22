@@ -8,14 +8,16 @@ import {
 	Typography,
 } from "@material-ui/core"
 import { Menu } from "@material-ui/icons"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom"
 import "./App.css"
 import { ErrorSnackbar } from "./components/ErrorSnackbar/ErrorSnackbar"
-import { RequestStatusType } from "./state/app-reducer"
+import { initializeAppTC, RequestStatusType } from "./state/app-reducer"
 import { AppRootStateType } from "./state/store"
 import { TodolistsList } from "./components/TodolistsList/TodolistsList"
 import { Login } from "./features/Login/Login"
+import { useEffect } from "react"
+import CircularProgress from "@material-ui/core/CircularProgress/CircularProgress"
 
 type AppType = {
 	demo?: boolean // для storybook
@@ -25,7 +27,17 @@ function AppWithRedux({ demo = false }: AppType) {
 	const status = useSelector<AppRootStateType, RequestStatusType>(
 		(state) => state.app.status
 	)
-
+  const isInitialized=useSelector<AppRootStateType, boolean>(state=> state.app.isInitialized)
+  const dispath = useDispatch()
+  useEffect( ()=> {
+    dispath(initializeAppTC ())
+  },[])
+  if (!isInitialized) {
+    return <div
+        style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+        <CircularProgress/>
+    </div>
+ }
 	return (
 		<BrowserRouter>
 			<div className='App'>

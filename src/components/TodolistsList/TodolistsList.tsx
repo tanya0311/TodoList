@@ -21,6 +21,7 @@ import {
 } from "../../state/todolists-reducer"
 import TodoList from "../Todolist/Todolist"
 import Grid from "@material-ui/core/Grid"
+import { Redirect } from "react-router-dom"
 
 type TodolistsListType = {
 	demo?: boolean // для storybook
@@ -34,7 +35,7 @@ export function TodolistsList({ demo = false }: TodolistsListType) {
 		(state) => state.todolists
 	)
 	let tasks = useSelector<AppRootStateType, Task1Type>((state) => state.tasks)
-  
+  const isLoginIn=useSelector<AppRootStateType, boolean>(state=> state.authMe.isLoggedIn)
 	let dispatch = useDispatch()
 
 	useEffect(() => {
@@ -93,6 +94,9 @@ export function TodolistsList({ demo = false }: TodolistsListType) {
 		},
 		[]
 	)
+  if (!isLoginIn){
+    return <Redirect to={'/login'}/>
+ }
 	return (
 		<div className='tlList'>
 			<Grid container style={{ padding: "20px" }}>
