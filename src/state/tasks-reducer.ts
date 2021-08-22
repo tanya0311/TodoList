@@ -6,7 +6,6 @@ import {
   todolistAPI,
   UpdateTaskModelType,
 } from "../api/todolist-api";
-import { Task1Type } from "../AppWithRedux";
 import {
   handleServerAppError,
   handleServerNetworkError,
@@ -24,6 +23,7 @@ import {
   SetTodolistsACType,
 } from "./todolists-reducer";
 import { AxiosError } from "axios";
+import { Task1Type } from "../components/TodolistsList/TodolistsList";
 
 const initialState: Task1Type = {};
 
