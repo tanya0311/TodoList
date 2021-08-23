@@ -10,7 +10,6 @@ function Alert(props: AlertProps) {
 }
 
 export function ErrorSnackbar() {
-  // const [open, setOpen] = React.useState(true)
   const error = useSelector<AppRootStateType, string | null>(
     (state) => state.app.error
   );
@@ -21,10 +20,8 @@ export function ErrorSnackbar() {
       return;
     }
     dispatch(setAppErrorAC(null));
-    //  setOpen(false)
   };
 
-  //   const isOpen = error !== null;
   return (
     <Snackbar
       open={error !== null}
@@ -32,7 +29,6 @@ export function ErrorSnackbar() {
       onClose={handleClose}
     >
       <Alert onClose={handleClose} severity="error">
-        {/* This is a success message! */}
         {error}
       </Alert>
     </Snackbar>

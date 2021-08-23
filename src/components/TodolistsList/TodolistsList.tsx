@@ -35,11 +35,11 @@ export function TodolistsList({ demo = false }: TodolistsListType) {
 		(state) => state.todolists
 	)
 	let tasks = useSelector<AppRootStateType, Task1Type>((state) => state.tasks)
-  const isLoginIn=useSelector<AppRootStateType, boolean>(state=> state.authMe.isLoggedIn)
+  const isLoggedIn=useSelector<AppRootStateType, boolean>(state=> state.authMe.isLoggedIn)
 	let dispatch = useDispatch()
 
 	useEffect(() => {
-		if (demo) {
+		if (demo || !isLoggedIn) {
 			return
 		}
 		dispatch(fetchTodolistsTC())
@@ -94,7 +94,7 @@ export function TodolistsList({ demo = false }: TodolistsListType) {
 		},
 		[]
 	)
-  if (!isLoginIn){
+  if (!isLoggedIn){
     return <Redirect to={'/login'}/>
  }
 	return (
@@ -131,4 +131,3 @@ export function TodolistsList({ demo = false }: TodolistsListType) {
 	)
 }
 
-// export default TodolistsList;

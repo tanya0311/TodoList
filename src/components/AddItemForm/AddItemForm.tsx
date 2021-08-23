@@ -1,7 +1,6 @@
-import { Button, IconButton, TextField } from "@material-ui/core";
+import {  IconButton, TextField } from "@material-ui/core";
 import { ControlPoint } from "@material-ui/icons";
 import React, { ChangeEvent, useState, KeyboardEvent } from "react";
-import { TaskType } from "../../api/todolist-api";
 
 export type AddItemFormProps = {
   addItem: (title: string) => void;
@@ -12,7 +11,6 @@ const AddItemForm = React.memo(({addItem, disabled = false}: AddItemFormProps) =
   let [newtitle, setNewtitle] = useState("");
   let [error, setError] = useState<string | null>(null);
 
-  // console.log("AddItemForm called");
 
   function addItemHandler() {
     if (newtitle.trim() !== "") {
@@ -41,7 +39,6 @@ const AddItemForm = React.memo(({addItem, disabled = false}: AddItemFormProps) =
         variant={"outlined"}
         value={newtitle}
         disabled={disabled}
-        // label={newtitle}
         label="Задача"
         error={!!error}
         helperText={error}
@@ -49,10 +46,8 @@ const AddItemForm = React.memo(({addItem, disabled = false}: AddItemFormProps) =
         onKeyPress={onKeyPressHandler}
       />
       <IconButton onClick={addItemHandler} color={"primary"} disabled={disabled}>
-        {/* {" "} */}
         <ControlPoint />
       </IconButton>
-      {/* {error && <div className="error-message">{error}</div>} */}
     </div>
   );
 })

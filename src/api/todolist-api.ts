@@ -63,7 +63,6 @@ export type UpdateTaskModelType = {
   status: number;
   priority: number;
   startDate: string | null;
-  // startDate: string ;
   deadline: string | null;
 };
 

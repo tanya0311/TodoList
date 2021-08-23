@@ -15,7 +15,7 @@ import { AppRootStateType } from '../../state/store'
 
 export const Login = () => {
   
-    const isLoginIn=useSelector<AppRootStateType, boolean>(state=> state.authMe.isLoggedIn)
+    const isLoggedIn=useSelector<AppRootStateType, boolean>(state=> state.authMe.isLoggedIn)
     const dispath = useDispatch()
  
     type FormikErrorType = {
@@ -45,15 +45,13 @@ export const Login = () => {
            return errors;
        },
        onSubmit: values => {
-          // debugger
           dispath(loginTC(values))
- 
            formik.resetForm()
        },
     })
     
  
-    if (isLoginIn){
+    if (isLoggedIn){
        return <Redirect to={'/'}/>
     }
     
@@ -91,10 +89,6 @@ export const Login = () => {
                type="password"
                label="Password"
                margin="normal"
-             //   name="password"
-             //   onChange={formik.handleChange}
-             //   value={formik.values.password}
-             //   onBlur={formik.handleBlur}
                {...formik.getFieldProps('password')}
              />
              {formik.touched.password && formik.errors.password ? <div style={{'color':'red'}}>{formik.errors.password}</div> : null}
@@ -102,8 +96,7 @@ export const Login = () => {
                label={"Remember me"}
                control={
                  <Checkbox
-                   name="rememberMe"
-                   onChange={formik.handleChange}
+                  {...formik.getFieldProps('rememberMe')}
                    checked={formik.values.rememberMe}
                  />
                }

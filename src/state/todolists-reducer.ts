@@ -1,5 +1,4 @@
 import { Dispatch } from "redux";
-import { v1 } from "uuid";
 import { todolistAPI, TodolistType } from "../api/todolist-api";
 import {
   handleServerAppError,
@@ -8,10 +7,8 @@ import {
 import {
   AppActionsType,
   RequestStatusType,
-  setAppErrorAC,
   setAppStatusAC,
 } from "./app-reducer";
-import { AppRootStateType } from "./store";
 import { AxiosError } from "axios";
 
 const initialState: Array<TodolistDomainType> = [];
@@ -122,12 +119,6 @@ export const createTodolistTC = (title: string) => {
           dispatch(setAppStatusAC("succeeded"));
         } else {
           handleServerAppError(res.data, dispatch);
-          // if (res.data.messages.length) {
-          //   dispatch(setAppErrorAC(res.data.messages[0]));
-          // } else {
-          //   dispatch(setAppErrorAC("Some error occurred"));
-          // }
-          // dispatch(setAppStatusAC("failed"));
         }
       })
       .catch((error: AxiosError) => {
@@ -177,15 +168,6 @@ export type TodolistDomainType = TodolistType & {
 };
 
 // type  dispatch actions
-export type ActionType =
-  | RemoveTLACType
-  | AddTLACType
-  | ChangeTLTitleACType
-  | ChangeTLFilterACType
-  | SetTodolistsACType
-  | ChangeTLEntitySatatusACType
-  | AppActionsType;
-
 export type RemoveTLACType = ReturnType<typeof RemoveTLAC>;
 export type AddTLACType = ReturnType<typeof AddTLAC>;
 export type ChangeTLTitleACType = ReturnType<typeof ChangeTLTitleAC>;
@@ -194,3 +176,12 @@ export type SetTodolistsACType = ReturnType<typeof setTodolistsAC>;
 export type ChangeTLEntitySatatusACType = ReturnType<
   typeof changeTLEntitySatatusAC
 >;
+
+export type ActionType =
+  | RemoveTLACType
+  | AddTLACType
+  | ChangeTLTitleACType
+  | ChangeTLFilterACType
+  | SetTodolistsACType
+  | ChangeTLEntitySatatusACType
+  | AppActionsType;

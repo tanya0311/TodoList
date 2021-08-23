@@ -29,11 +29,13 @@ function AppWithRedux({ demo = false }: AppType) {
 		(state) => state.app.status
 	)
   const isInitialized=useSelector<AppRootStateType, boolean>(state=> state.app.isInitialized)
-  const isLoginIn=useSelector<AppRootStateType, boolean>(state=> state.authMe.isLoggedIn)
+  const isLoggedIn=useSelector<AppRootStateType, boolean>(state=> state.authMe.isLoggedIn)
   const dispath = useDispatch()
+
   useEffect( ()=> {
     dispath(initializeAppTC ())
   },[])
+
   const logoutHandler= ()=>{
     dispath(logoutTC())
   }
@@ -53,8 +55,7 @@ function AppWithRedux({ demo = false }: AppType) {
 							<Menu />
 						</IconButton>
 						<Typography variant='h6'>News</Typography>
-						<Button color='inherit'>Login</Button>
-            { isLoginIn && <Button color="inherit" onClick={logoutHandler}>Logout</Button>}
+            { isLoggedIn && <Button color="inherit" onClick={logoutHandler}>Logout</Button>}
 					</Toolbar>
 					{status === "loading" && <LinearProgress color='secondary' />}
 				</AppBar>

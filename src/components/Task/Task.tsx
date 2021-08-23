@@ -4,20 +4,16 @@ import React, { ChangeEvent } from "react";
 import { TaskStatuses, TaskType } from "../../api/todolist-api";
 import { EditableSpan } from "../EditabeSpan/EditableSpan";
 import { RequestStatusType } from "../../state/app-reducer";
-// import { TasksPopsType } from "./Todolist";
 
 export type TaskPropsType = {
   task: TaskType;
-  // task: TasksPopsType;
   changeTask1Title: (taskId: string, newValue: string) => void;
   changeTasks: (taskId: string, newIsDoneValue: TaskStatuses) => void;
   removeTasks: (taskId: string) => void;
-  // entityStatus:  RequestStatusType;
 };
  
 export const Task = React.memo(
   ({ task, changeTask1Title, changeTasks, removeTasks }: TaskPropsType) => {
-    // console.log("Task called");
 
     const onChangTitleHandler = (newValue: string) => {
       changeTask1Title(task.id, newValue);
@@ -25,7 +21,6 @@ export const Task = React.memo(
     const onChangeTaskSatatus = (e: ChangeEvent<HTMLInputElement>) => {
       let newIsDoneValue = e.currentTarget.checked
       changeTasks(task.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New);
-      // changeTasks(task.id, e.currentTarget.checked);
     };
     const removeTask = () => {
       removeTasks(task.id);
@@ -33,7 +28,6 @@ export const Task = React.memo(
     return (
       <li key={task.id} className={task.status ? "is-done" : ""}>
         <Checkbox
-          // type="checkbox" не надо
           checked={task.status === TaskStatuses.Completed}
           onChange={onChangeTaskSatatus}
         />
