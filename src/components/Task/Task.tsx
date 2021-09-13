@@ -4,6 +4,7 @@ import React, { ChangeEvent } from "react";
 import { TaskStatuses, TaskType } from "../../api/todolist-api";
 import { EditableSpan } from "../EditabeSpan/EditableSpan";
 import { RequestStatusType } from "../../state/app-reducer";
+import s from "./Task.module.css";
 
 export type TaskPropsType = {
   task: TaskType;
@@ -26,7 +27,7 @@ export const Task = React.memo(
       removeTasks(task.id);
     };
     return (
-      <li key={task.id} className={task.status ? "is-done" : ""}>
+       <li key={task.id} className={task.status ? "is-done" : ""}> 
         <Checkbox
           checked={task.status === TaskStatuses.Completed}
           onChange={onChangeTaskSatatus}
@@ -37,7 +38,9 @@ export const Task = React.memo(
         <IconButton onClick={removeTask}>
           <Delete  />
         </IconButton>
+        <div className={s.vb}></div>
       </li>
+      
     );
   }
 );

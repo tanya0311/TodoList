@@ -8,6 +8,7 @@ import { EditableSpan } from "../EditabeSpan/EditableSpan"
 import { fetchTasksTC } from "../../state/tasks-reducer"
 import { FilterType, TodolistDomainType } from "../../state/todolists-reducer"
 import { Task } from "../Task/Task"
+import s from "./Todolist.module.css"
 
 type TodolistPropsType = {
 	todolist: TodolistDomainType
@@ -107,7 +108,7 @@ const TodoList = React.memo(({ demo = false, ...props }: TodolistPropsType) => {
 				addItem={addTask}
 				disabled={props.todolist.entityStatus === "loading"}
 			/>
-			<ul>
+			<ul className={s.list}>
 				{tasksForTodolist.map((t) => (
 					<Task
 						key={props.todolist.id}
