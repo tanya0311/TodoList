@@ -99,7 +99,7 @@ export function TodolistsList({ demo = false }: TodolistsListType) {
  }
 	return (
 		<div className='tlList'>
-			<Grid container style={{ padding: "20px" }}>
+			<Grid container style={{ padding: "20px", width: '300px' }}>
 				<AddItemForm addItem={addTodolist} />
 			</Grid>
 			<Grid container spacing={9}>

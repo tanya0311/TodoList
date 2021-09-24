@@ -9,8 +9,9 @@ import {
 } from "@material-ui/core"
 import { Menu } from "@material-ui/icons"
 import { useDispatch, useSelector } from "react-redux"
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom"
-import "./App.css"
+import { BrowserRouter, HashRouter, Redirect, Route, Switch } from "react-router-dom"
+import  "./App.css"
+// import s from "./Todolist.module.css"
 import { ErrorSnackbar } from "./components/ErrorSnackbar/ErrorSnackbar"
 import { initializeAppTC, RequestStatusType } from "./state/app-reducer"
 import { AppRootStateType } from "./state/store"
@@ -46,16 +47,16 @@ function AppWithRedux({ demo = false }: AppType) {
     </div>
  }
 	return (
-		<BrowserRouter>
+		<HashRouter>
 			<div className='App'>
 				<ErrorSnackbar />
 				<AppBar position='static'>
 					<Toolbar>
-						<IconButton edge='start' color='inherit' aria-label='menu'>
+						{/* <IconButton edge='start' color='inherit' aria-label='menu'>
 							<Menu />
-						</IconButton>
-						<Typography variant='h6'>News</Typography>
-            { isLoggedIn && <Button color="inherit" onClick={logoutHandler}>Logout</Button>}
+						</IconButton> */}
+						{/* <Typography variant='h6'>News</Typography> */}
+            { isLoggedIn && <Button className='btnLogOut' color="inherit" onClick={logoutHandler}>Logout</Button>}
 					</Toolbar>
 					{status === "loading" && <LinearProgress color='secondary' />}
 				</AppBar>
@@ -74,7 +75,7 @@ function AppWithRedux({ demo = false }: AppType) {
 					</Switch>
 				</Container>
 			</div>
-		</BrowserRouter>
+		</HashRouter>
 	)
 }
 

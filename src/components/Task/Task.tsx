@@ -27,7 +27,7 @@ export const Task = React.memo(
       removeTasks(task.id);
     };
     return (
-       <li key={task.id} className={task.status ? "is-done" : ""}> 
+       <li key={task.id} style={{display: 'flex', justifyContent:'space-between', alignItems:'center'}}className={task.status ? "isDone" : ""}> 
         <Checkbox
           checked={task.status === TaskStatuses.Completed}
           onChange={onChangeTaskSatatus}
@@ -38,7 +38,7 @@ export const Task = React.memo(
         <IconButton onClick={removeTask}>
           <Delete  />
         </IconButton>
-        <div className={s.vb}></div>
+      
       </li>
       
     );

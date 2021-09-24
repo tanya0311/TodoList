@@ -89,8 +89,8 @@ const TodoList = React.memo(({ demo = false, ...props }: TodolistPropsType) => {
 	}
 	return (
 		<div>
-			<h3>
-				<span>
+			<h3 className={s.titleTl}>
+				<span className={s.title} >
 					<EditableSpan
 						title={props.todolist.title}
 						onChange={onChangTodolistTitleHandler}
