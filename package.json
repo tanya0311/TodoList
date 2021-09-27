@@ -2,7 +2,7 @@
   "name": "it-incubator-todolist-ts",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://tanya0311.github.io/react-TodoList",
+  "homepage": "http://tanya0311.github.io/TodoList",
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
@@ -38,7 +38,8 @@
     "jest:integration": "jest -c integration/jest.config.js",
     "test:integration": "start-server-and-test storybook http-get://localhost:9009 jest:integration",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+   "deploy": "gh-pages -d build"
+
   },
   "eslintConfig": {
     "extends": "react-app",

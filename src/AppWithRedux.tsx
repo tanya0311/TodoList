@@ -47,7 +47,7 @@ function AppWithRedux({ demo = false }: AppType) {
     </div>
  }
 	return (
-		<HashRouter>
+		<HashRouter >
 			<div className='App'>
 				<ErrorSnackbar />
 				<AppBar position='static'>
