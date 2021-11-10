@@ -15,9 +15,10 @@ export type TaskPropsType = {
  
 export const Task = React.memo(
   ({ task, changeTask1Title, changeTasks, removeTasks }: TaskPropsType) => {
+console.log(task);
 
     const onChangTitleHandler = (newValue: string) => {
-      changeTask1Title(task.id, newValue);
+      changeTask1Title (task.id, newValue);
     };
     const onChangeTaskSatatus = (e: ChangeEvent<HTMLInputElement>) => {
       let newIsDoneValue = e.currentTarget.checked
